@@ -1,0 +1,44 @@
+import Link from "next/link";
+import Image from "next/image";
+import { navLinks } from "@/lib/nav";
+import { ConsultationButton } from "@/components/shared/consultation-button";
+
+export function Header() {
+  return (
+    <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/75">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
+          <Image
+            src="/images/logo.png"
+            alt="KNK TEX"
+            width={40}
+            height={43}
+            className="h-7 w-auto"
+            priority
+          />
+          <span className="font-heading text-base font-semibold tracking-wide">
+            KNK TEX
+          </span>
+        </Link>
+
+        <nav className="hidden items-center gap-7 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium text-graphite-soft transition-colors hover:text-foreground"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="hidden md:block">
+          <ConsultationButton className="h-9 bg-graphite px-4 text-sm font-medium text-white hover:bg-graphite/90">
+            Получить консультацию
+          </ConsultationButton>
+        </div>
+      </div>
+    </header>
+  );
+}
