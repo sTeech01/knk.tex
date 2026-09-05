@@ -21,6 +21,7 @@ import { PriceTag } from "@/components/shared/price-tag";
 import { ConsultationButton } from "@/components/shared/consultation-button";
 import { Badge } from "@/components/ui/badge";
 import { company } from "@/data/company";
+import { fabricDescription, fabricKeywords } from "@/lib/seo";
 
 export function generateStaticParams() {
   return fabrics.map((fabric) => ({ slug: fabric.slug }));
@@ -35,14 +36,16 @@ export async function generateMetadata({
   const fabric = getFabricBySlug(slug);
   if (!fabric) return {};
 
-  const title = `${fabric.name} - ${fabric.category.toLowerCase()} оптом`;
+  const title = `${fabric.name} - ${fabric.category.toLowerCase()} для штор оптом`;
+  const description = fabricDescription(fabric);
   return {
     title,
-    description: fabric.shortDescription,
+    description,
+    keywords: fabricKeywords(fabric),
     alternates: { canonical: `/catalog/${fabric.slug}` },
     openGraph: {
       title,
-      description: fabric.shortDescription,
+      description,
       images: [{ url: fabric.image }],
     },
   };

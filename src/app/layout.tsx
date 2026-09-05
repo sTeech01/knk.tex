@@ -8,6 +8,7 @@ import { ConsultationProvider } from "@/components/shared/consultation-provider"
 import { MotionProvider } from "@/components/shared/motion-provider";
 import { organizationJsonLd } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
+import { siteKeywords } from "@/lib/seo";
 import { homeCopy } from "@/data/copy";
 
 const fontSans = Manrope({
@@ -28,18 +29,7 @@ export const metadata: Metadata = {
     template: "%s - KNK TEX",
   },
   description: homeCopy.metaDescriptionHome,
-  keywords: [
-    "портьерные ткани оптом",
-    "ткани для штор оптом",
-    "оптовый поставщик тканей",
-    "блэкаут оптом",
-    "канвас оптом",
-    "бархат для штор оптом",
-    "сатин для штор",
-    "подкладочная ткань оптом",
-    "ткани для салонов штор",
-    "ткани для швейных производств",
-  ],
+  keywords: [...siteKeywords],
   openGraph: {
     type: "website",
     locale: "ru_RU",
