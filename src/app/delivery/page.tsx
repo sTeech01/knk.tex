@@ -1,22 +1,26 @@
 import type { Metadata } from "next";
+import { BadgeCheck } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { deliverySchedule } from "@/data/delivery-schedule";
+import { carriersCount, deliverySchedule } from "@/data/delivery-schedule";
 import { DeliveryGroupCard } from "@/components/delivery/delivery-group-card";
 import { breadcrumbJsonLd } from "@/lib/schema";
 import { company } from "@/data/company";
-import type { DeliveryDirection } from "@/lib/types";
+import type { WeekDay } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Доставка",
-  description:
-    "Расписание отправок портьерных тканей KNK TEX транспортными компаниями по направлениям «Юг» и «Север».",
+  description: `Расписание отгрузок портьерных тканей KNK TEX: ${carriersCount} транспортных компаний по всей России. Доставка по Москве - бесплатно.`,
   alternates: { canonical: "/delivery" },
 };
 
-const tabs: { value: "all" | DeliveryDirection; label: string }[] = [
-  { value: "all", label: "Все направления" },
-  { value: "Юг", label: "Юг" },
-  { value: "Север", label: "Север" },
+const tabs: { value: "all" | WeekDay; label: string }[] = [
+  { value: "all", label: "Все дни" },
+  { value: "Понедельник", label: "Пн" },
+  { value: "Вторник", label: "Вт" },
+  { value: "Среда", label: "Ср" },
+  { value: "Четверг", label: "Чт" },
+  { value: "Пятница", label: "Пт" },
+  { value: "Суббота", label: "Сб" },
 ];
 
 export default function DeliveryPage() {
@@ -38,10 +42,23 @@ export default function DeliveryPage() {
         </span>
         <h1 className="mt-3 font-heading text-4xl">Доставка</h1>
         <p className="mt-3 text-muted-foreground">
-          Отправляем ткани транспортными компаниями по всей России.
-          Актуальное расписание отправок по дням недели - ниже. Минимальный
-          заказ - {company.minOrderLabel}.
+          Отгружаем ткани {carriersCount} транспортными компаниями по всей
+          России. Выберите день недели, чтобы увидеть, кто отгружает в этот
+          день. Минимальный заказ - {company.minOrderLabel}.
         </p>
+      </div>
+
+      {/* Бесплатная доставка по Москве - заказчик просил вынести отдельно. */}
+      <div className="mt-8 flex items-center gap-4 rounded-lg border border-gold/30 bg-gold-soft/40 px-5 py-4">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gold text-gold-foreground">
+          <BadgeCheck className="size-5" />
+        </span>
+        <div>
+          <p className="font-heading text-lg">Доставка по Москве - бесплатно</p>
+          <p className="text-sm text-muted-foreground">
+            По России - отгрузка любой транспортной компанией из списка ниже.
+          </p>
+        </div>
       </div>
 
       <Tabs defaultValue="all" className="mt-10">
@@ -57,7 +74,9 @@ export default function DeliveryPage() {
           const groups =
             tab.value === "all"
               ? deliverySchedule
-              : deliverySchedule.filter((group) => group.direction === tab.value);
+              : deliverySchedule.filter((group) =>
+                  group.days.includes(tab.value as WeekDay)
+                );
 
           return (
             <TabsContent key={tab.value} value={tab.value} className="mt-8">
@@ -72,7 +91,7 @@ export default function DeliveryPage() {
       </Tabs>
 
       <p className="mt-10 text-sm text-muted-foreground">
-        Список транспортных компаний и дни отправки уточняются у менеджера при
+        Список транспортных компаний и дни отгрузки уточняются у менеджера при
         оформлении заявки - расписание может обновляться.
       </p>
     </div>

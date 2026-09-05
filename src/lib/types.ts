@@ -66,13 +66,14 @@ export type WeekDay =
   | "Пятница"
   | "Суббота";
 
-export type DeliveryDirection = "Юг" | "Север";
-
+/**
+ * Группа транспортных компаний с одинаковым расписанием отгрузок.
+ * Направления («юг»/«север») из исходной таблицы намеренно не хранятся:
+ * заказчик подтвердил, что они к расписанию отношения не имеют.
+ */
 export type DeliveryGroup = {
   id: string;
-  direction: DeliveryDirection;
-  title: string;
-  description: string;
+  /** Дни недели, по которым эти компании забирают груз. */
   days: WeekDay[];
   carriers: string[];
 };
