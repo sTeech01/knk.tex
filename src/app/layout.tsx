@@ -28,6 +28,18 @@ export const metadata: Metadata = {
     template: "%s - KNK TEX",
   },
   description: homeCopy.metaDescriptionHome,
+  keywords: [
+    "портьерные ткани оптом",
+    "ткани для штор оптом",
+    "оптовый поставщик тканей",
+    "блэкаут оптом",
+    "канвас оптом",
+    "бархат для штор оптом",
+    "сатин для штор",
+    "подкладочная ткань оптом",
+    "ткани для салонов штор",
+    "ткани для швейных производств",
+  ],
   openGraph: {
     type: "website",
     locale: "ru_RU",
@@ -46,7 +58,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1c1d20",
+  themeColor: "#13314e",
   viewportFit: "cover",
 };
 

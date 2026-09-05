@@ -12,20 +12,20 @@ const categoryDescriptions: Record<FabricCategory, string> = {
   Бархат: "Плотный ворс и тяжёлая драпировка для парадных интерьеров.",
   Сатин: "Гладкая фактура с лёгким блеском для мягких, текучих штор.",
   Канвас: "Прочное фактурное полотно для повседневной эксплуатации.",
-  Блэкаут: "Полное затемнение помещения плотным двусторонним полотном.",
-  Димаут: "Приглушённый свет без полного затемнения комнаты.",
+  Блэкаут:
+    "Полное затемнение и димаут - от приглушённого света до полной темноты.",
   "Подкладочная ткань": "Лёгкая изнаночная ткань для портьер и штор.",
 };
 
 // Ширина плитки на десктопе - задаёт неравномерный, «бенто»-ритм сетки
-// вместо однотипных карточек одинакового размера.
+// вместо однотипных карточек одинакового размера. Пять категорий ложатся
+// в три ряда: 7+5, 4+8 и последняя плитка во всю ширину.
 const spanByIndex = [
   "lg:col-span-7",
   "lg:col-span-5",
   "lg:col-span-4",
   "lg:col-span-8",
-  "lg:col-span-6",
-  "lg:col-span-6",
+  "lg:col-span-12",
 ];
 
 export function CategoryGrid() {
@@ -70,14 +70,14 @@ export function CategoryGrid() {
                 sizes="(min-width: 1024px) 45vw, 90vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-graphite/90 via-graphite/25 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/25 to-transparent" />
               <div className="relative flex items-end justify-between p-6 text-white">
                 <div>
                   <p className="text-xs uppercase tracking-wider text-gold">
                     {count} {count === 1 ? "вид" : "вида"} в каталоге
                   </p>
                   <h3 className="mt-1 font-heading text-2xl">{category}</h3>
-                  <p className="mt-1 max-w-[30ch] text-sm text-ivory/70">
+                  <p className="mt-1 max-w-[30ch] text-sm text-mist/70">
                     {categoryDescriptions[category]}
                   </p>
                 </div>

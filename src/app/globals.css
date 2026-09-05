@@ -9,9 +9,9 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
-  --color-graphite: var(--graphite);
-  --color-graphite-soft: var(--graphite-soft);
-  --color-ivory: var(--ivory);
+  --color-navy: var(--navy);
+  --color-navy-soft: var(--navy-soft);
+  --color-mist: var(--mist);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
   --color-gold-foreground: var(--gold-foreground);
@@ -53,31 +53,36 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/*
+ * Палитра построена по фирменному каталогу KNK TEX: глубокий сине-голубой
+ * градиент, белая типографика и золото логотипа как единственный акцент.
+ * Тёплые бежевые тона намеренно убраны - заказчик их отклонил.
+ */
 :root {
-  --graphite: #1c1d20;
-  --graphite-soft: #55585e;
-  --ivory: #f5f3ef;
-  --gold: #ab8a45;
-  --gold-soft: #ede3cd;
-  --gold-foreground: #2a2210;
+  --navy: #13314e;
+  --navy-soft: #4c6a88;
+  --mist: #eef2f7;
+  --gold: #c4a049;
+  --gold-soft: #f3e9d2;
+  --gold-foreground: #2b2311;
 
   --background: #ffffff;
-  --foreground: var(--graphite);
+  --foreground: var(--navy);
   --card: #ffffff;
-  --card-foreground: var(--graphite);
+  --card-foreground: var(--navy);
   --popover: #ffffff;
-  --popover-foreground: var(--graphite);
-  --primary: var(--graphite);
+  --popover-foreground: var(--navy);
+  --primary: var(--navy);
   --primary-foreground: #ffffff;
-  --secondary: var(--ivory);
-  --secondary-foreground: var(--graphite);
-  --muted: var(--ivory);
-  --muted-foreground: var(--graphite-soft);
+  --secondary: var(--mist);
+  --secondary-foreground: var(--navy);
+  --muted: var(--mist);
+  --muted-foreground: var(--navy-soft);
   --accent: var(--gold);
   --accent-foreground: var(--gold-foreground);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #e5e2da;
-  --input: #e5e2da;
+  --border: #dbe3ec;
+  --input: #dbe3ec;
   --ring: var(--gold);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
@@ -85,13 +90,13 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.375rem;
-  --sidebar: var(--ivory);
-  --sidebar-foreground: var(--graphite);
-  --sidebar-primary: var(--graphite);
+  --sidebar: var(--mist);
+  --sidebar-foreground: var(--navy);
+  --sidebar-primary: var(--navy);
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: var(--gold-soft);
   --sidebar-accent-foreground: var(--gold-foreground);
-  --sidebar-border: #e5e2da;
+  --sidebar-border: #dbe3ec;
   --sidebar-ring: var(--gold);
 }
 

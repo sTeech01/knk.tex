@@ -131,13 +131,13 @@ export default async function FabricPage({
           <div>
             <ConsultationButton
               subject={fabric.name}
-              className="h-12 w-full bg-graphite text-base font-semibold text-white hover:bg-graphite/90 sm:w-auto sm:px-10"
+              className="h-12 w-full bg-navy text-base font-semibold text-white hover:bg-navy/90 sm:w-auto sm:px-10"
             >
               Получить консультацию
             </ConsultationButton>
 
             <p className="mt-3 text-xs text-muted-foreground">
-              Минимальный заказ - от {company.minOrderMeters} метров.
+              Минимальный заказ - {company.minOrderLabel}.
             </p>
           </div>
 

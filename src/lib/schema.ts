@@ -14,6 +14,7 @@ export function organizationJsonLd() {
     telephone: company.phone,
     email: company.email,
     areaServed: "RU",
+    sameAs: [company.telegram, company.whatsapp],
   };
 }
 
@@ -39,12 +40,18 @@ export function productJsonLd(fabric: Fabric, rateUsdToRub: number) {
     category: fabric.category,
     image: `${SITE_URL}${fabric.image}`,
     countryOfOrigin: fabric.origin,
+    // availability намеренно не указывается: по ТЗ сайт не показывает остатки
+    // ни в интерфейсе, ни в разметке - иначе поисковики выводят «В наличии».
     offers: {
       "@type": "Offer",
       priceCurrency: "USD",
       price: fabric.priceUsd.toFixed(2),
-      availability: "https://schema.org/InStock",
       url: `${SITE_URL}/catalog/${fabric.slug}`,
+      eligibleQuantity: {
+        "@type": "QuantitativeValue",
+        minValue: company.metersPerRoll,
+        unitCode: "MTR",
+      },
     },
     additionalProperty: [
       {

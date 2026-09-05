@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { company } from "@/data/company";
 import { fabrics } from "@/data/fabrics";
 import { filterFabrics, type CatalogFilters, type CatalogSort } from "@/lib/catalog-filters";
 import { getUsdToRubRate } from "@/lib/currency";
@@ -66,8 +67,8 @@ export default async function CatalogPage({
         </span>
         <h1 className="mt-3 font-heading text-4xl">Каталог тканей</h1>
         <p className="mt-3 text-muted-foreground">
-          {fabrics.length} видов портьерных тканей. Минимальный заказ - от 50
-          метров по каждой позиции.
+          {fabrics.length} видов портьерных тканей. Минимальный заказ -{" "}
+          {company.minOrderLabel} по каждой позиции.
         </p>
       </div>
 

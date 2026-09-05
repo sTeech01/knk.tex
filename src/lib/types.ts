@@ -3,7 +3,6 @@ export type FabricCategory =
   | "Сатин"
   | "Канвас"
   | "Блэкаут"
-  | "Димаут"
   | "Подкладочная ткань";
 
 export type FabricOrigin = "Китай" | "Турция";

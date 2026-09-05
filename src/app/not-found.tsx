@@ -14,7 +14,7 @@ export default function NotFound() {
       </p>
       <Link
         href="/catalog"
-        className="group mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-graphite px-8 text-sm font-medium text-white transition-colors hover:bg-graphite/90"
+        className="group mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-navy px-8 text-sm font-medium text-white transition-colors hover:bg-navy/90"
       >
         Перейти в каталог
         <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />

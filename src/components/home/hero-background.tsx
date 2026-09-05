@@ -26,11 +26,14 @@ export function HeroBackground() {
           fill
           priority
           sizes="100vw"
-          className="object-cover brightness-[0.42] saturate-[0.85]"
+          className="object-cover brightness-[0.42] saturate-[0.7]"
         />
       </motion.div>
 
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(10,10,11,0.6)_100%)]" />
+      {/* Синий тон поверх фотографии - фирменная гамма каталога KNK TEX. */}
+      <div className="absolute inset-0 bg-navy/55 mix-blend-multiply" />
+      <div className="absolute inset-0 bg-[linear-gradient(160deg,rgba(19,49,78,0.85)_0%,rgba(30,72,110,0.55)_45%,rgba(19,49,78,0.9)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(9,26,43,0.72)_100%)]" />
       <div
         className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
         style={{ backgroundImage: `url("${NOISE_URI}")` }}

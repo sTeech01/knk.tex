@@ -6,7 +6,7 @@ import { homeCopy } from "@/data/copy";
 
 export function ContactSection() {
   return (
-    <section id="contacts" className="bg-ivory py-24">
+    <section id="contacts" className="bg-mist py-24">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-2 lg:gap-20">
         <Reveal>
           <SectionHeading

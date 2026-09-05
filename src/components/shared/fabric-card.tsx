@@ -42,7 +42,7 @@ export function FabricCard({
           {fabric.shortDescription}
         </p>
 
-        <p className="mt-1 truncate text-xs uppercase tracking-wide text-graphite-soft/70">
+        <p className="mt-1 truncate text-xs uppercase tracking-wide text-navy-soft/70">
           {fabric.category} · {fabric.widthCm} см · {fabric.densityGsm} г/м² ·{" "}
           {fabric.origin}
         </p>

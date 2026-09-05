@@ -26,7 +26,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-graphite-soft transition-colors hover:text-foreground"
+              className="text-sm font-medium text-navy-soft transition-colors hover:text-foreground"
             >
               {link.label}
             </Link>
@@ -34,7 +34,7 @@ export function Header() {
         </nav>
 
         <div className="hidden md:block">
-          <ConsultationButton className="h-9 bg-graphite px-4 text-sm font-medium text-white hover:bg-graphite/90">
+          <ConsultationButton className="h-9 bg-navy px-4 text-sm font-medium text-white hover:bg-navy/90">
             Получить консультацию
           </ConsultationButton>
         </div>

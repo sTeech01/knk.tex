@@ -7,7 +7,7 @@ import { fabrics } from "@/data/fabrics";
 
 export function Hero() {
   return (
-    <section className="relative flex items-center justify-center overflow-hidden bg-graphite">
+    <section className="relative flex items-center justify-center overflow-hidden bg-navy">
       <HeroBackground />
 
       <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center lg:py-28">
@@ -21,24 +21,24 @@ export function Hero() {
           {homeCopy.heroHeadline}
         </h1>
 
-        <p className="mt-5 max-w-lg text-balance text-base text-ivory/70 sm:text-lg">
+        <p className="mt-5 max-w-lg text-balance text-base text-mist/70 sm:text-lg">
           {homeCopy.heroSubheadline}
         </p>
 
         <Link
           href="/catalog"
-          className="group mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-ivory/25 px-7 text-sm font-medium text-white transition-colors hover:border-gold hover:text-gold"
+          className="group mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-mist/25 px-7 text-sm font-medium text-white transition-colors hover:border-gold hover:text-gold"
         >
           {homeCopy.heroSecondaryCta}
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
         </Link>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs uppercase tracking-wider text-ivory/45">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs uppercase tracking-wider text-mist/45">
           <span>{fabrics.length} тканей в каталоге</span>
-          <span className="size-1 rounded-full bg-ivory/25" aria-hidden />
+          <span className="size-1 rounded-full bg-mist/25" aria-hidden />
           <span>Китай и Турция - напрямую</span>
-          <span className="size-1 rounded-full bg-ivory/25" aria-hidden />
-          <span>От {company.minOrderMeters} метров</span>
+          <span className="size-1 rounded-full bg-mist/25" aria-hidden />
+          <span>Заказ {company.minOrderLabel}</span>
         </div>
       </div>
     </section>

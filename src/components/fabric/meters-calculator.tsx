@@ -15,7 +15,8 @@ export function MetersCalculator({
   priceUsd: number;
   rateUsdToRub: number;
 }) {
-  const [meters, setMeters] = useState<number>(company.minOrderMeters);
+  // Стартовое значение - один рулон: это и есть минимальный заказ.
+  const [meters, setMeters] = useState<number>(company.metersPerRoll);
 
   const totalUsd = useMemo(() => meters * priceUsd, [meters, priceUsd]);
   const totalRub = useMemo(
@@ -23,7 +24,7 @@ export function MetersCalculator({
     [totalUsd, rateUsdToRub]
   );
 
-  const belowMinimum = meters < company.minOrderMeters;
+  const belowMinimum = meters > 0 && meters < company.metersPerRoll;
 
   return (
     <div>
@@ -56,8 +57,9 @@ export function MetersCalculator({
 
       {belowMinimum && (
         <p className="mt-4 text-xs text-muted-foreground">
-          Минимальный заказ - от {company.minOrderMeters} метров. Итоговая
-          стоимость уточняется у менеджера.
+          Минимальный заказ - {company.minOrderLabel} (в рулоне от{" "}
+          {company.metersPerRoll} метров). Итоговая стоимость уточняется у
+          менеджера.
         </p>
       )}
       <p className="mt-2 text-xs text-muted-foreground">

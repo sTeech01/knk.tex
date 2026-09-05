@@ -136,7 +136,7 @@ export const fabrics: Fabric[] = [
   {
     slug: "dimaut-midnight",
     name: "Димаут Midnight",
-    category: "Димаут",
+    category: "Блэкаут",
     origin: "Китай",
     widthCm: 320,
     densityGsm: 800,

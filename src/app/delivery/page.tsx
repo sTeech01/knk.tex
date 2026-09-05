@@ -40,7 +40,7 @@ export default function DeliveryPage() {
         <p className="mt-3 text-muted-foreground">
           Отправляем ткани транспортными компаниями по всей России.
           Актуальное расписание отправок по дням недели - ниже. Минимальный
-          заказ - от {company.minOrderMeters} метров.
+          заказ - {company.minOrderLabel}.
         </p>
       </div>
 
