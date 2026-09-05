@@ -17,30 +17,59 @@ const categoryDescriptions: Record<FabricCategory, string> = {
   "Подкладочная ткань": "Лёгкая изнаночная ткань для портьер и штор.",
 };
 
-// Ширина плитки на десктопе - задаёт неравномерный, «бенто»-ритм сетки
-// вместо однотипных карточек одинакового размера. Пять категорий ложатся
-// в три ряда: 7+5, 4+8 и последняя плитка во всю ширину.
-const spanByIndex = [
-  "lg:col-span-7",
-  "lg:col-span-5",
-  "lg:col-span-4",
-  "lg:col-span-8",
-  "lg:col-span-12",
+/**
+ * Порядок и размер плиток задаются вручную - по ходовости категории,
+ * а не по порядку в товарной матрице. Заказчик назвал канвас самым
+ * ходовым, поэтому он занимает крупную плитку наверху, а подкладочная
+ * ткань - низкую полосу внизу: её берут реже всего.
+ *
+ * Раскладка на десктопе: 12 / 4+4+4 / 12.
+ */
+const tileLayout: {
+  category: FabricCategory;
+  span: string;
+  height: string;
+}[] = [
+  {
+    category: "Канвас",
+    // На планшете канвас тоже во всю ширину - остальные четыре ложатся
+    // ровными парами, без одинокой плитки в конце.
+    span: "sm:col-span-2 lg:col-span-12",
+    height: "h-80 lg:h-[26rem]",
+  },
+  { category: "Блэкаут", span: "lg:col-span-4", height: "h-72 lg:h-80" },
+  { category: "Бархат", span: "lg:col-span-4", height: "h-72 lg:h-80" },
+  { category: "Сатин", span: "lg:col-span-4", height: "h-72 lg:h-80" },
+  {
+    category: "Подкладочная ткань",
+    span: "lg:col-span-12",
+    height: "h-44 lg:h-48",
+  },
 ];
 
+const defaultTile = { span: "lg:col-span-6", height: "h-72 lg:h-80" };
+
 export function CategoryGrid() {
-  const categories = Array.from(
-    new Map(
-      fabrics.map((fabric) => [
-        fabric.category,
-        {
-          category: fabric.category,
-          count: fabrics.filter((f) => f.category === fabric.category).length,
-          image: fabric.image,
-        },
-      ])
-    ).values()
-  );
+  const byCategory = new Map<FabricCategory, { count: number; image: string }>();
+  for (const fabric of fabrics) {
+    const existing = byCategory.get(fabric.category);
+    byCategory.set(fabric.category, {
+      count: (existing?.count ?? 0) + 1,
+      image: existing?.image ?? fabric.image,
+    });
+  }
+
+  // Сначала категории в заданном порядке, затем всё, что появилось
+  // в данных, но ещё не попало в раскладку - чтобы новая категория
+  // не пропала с главной молча.
+  const ordered = [
+    ...tileLayout
+      .filter((tile) => byCategory.has(tile.category))
+      .map((tile) => ({ ...tile, ...byCategory.get(tile.category)! })),
+    ...[...byCategory.entries()]
+      .filter(([category]) => !tileLayout.some((t) => t.category === category))
+      .map(([category, data]) => ({ category, ...defaultTile, ...data })),
+  ];
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-28">
@@ -53,15 +82,18 @@ export function CategoryGrid() {
       </Reveal>
 
       <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-12">
-        {categories.map(({ category, count, image }, index) => (
+        {ordered.map(({ category, count, image, span, height }, index) => (
           <Reveal
             key={category}
             delay={index * 0.05}
-            className={cn(spanByIndex[index] ?? "lg:col-span-6")}
+            className={span}
           >
             <Link
               href={`/catalog?category=${encodeURIComponent(category)}`}
-              className="group relative flex h-72 flex-col justify-end overflow-hidden rounded-lg sm:h-80"
+              className={cn(
+                "group relative flex flex-col justify-end overflow-hidden rounded-lg",
+                height
+              )}
             >
               <Image
                 src={image}
@@ -70,7 +102,10 @@ export function CategoryGrid() {
                 sizes="(min-width: 1024px) 45vw, 90vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/25 to-transparent" />
+              {/* Затемнение прижато к низу плитки: на низкой полосе
+                  подкладочной ткани у плавного градиента не хватало
+                  высоты и подпись переставала читаться. */}
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/95 from-10% via-navy/55 via-45% to-navy/5" />
               <div className="relative flex items-end justify-between p-6 text-white">
                 <div>
                   <p className="text-xs uppercase tracking-wider text-gold">
