@@ -9,10 +9,10 @@ export function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3">
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <Image
-            src="/images/logo.png"
+            src="/images/logo.webp"
             alt="KNK TEX"
-            width={40}
-            height={43}
+            width={267}
+            height={400}
             className="h-7 w-auto"
             priority
           />

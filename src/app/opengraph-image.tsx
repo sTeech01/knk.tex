@@ -26,7 +26,7 @@ export default function OpengraphImage() {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={iconSrc} width={140} height={118} alt="" />
+        <img src={iconSrc} width={100} height={150} alt="" />
         <div
           style={{
             marginTop: 32,

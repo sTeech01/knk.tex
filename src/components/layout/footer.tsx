@@ -13,10 +13,10 @@ export function Footer() {
         <div className="md:col-span-1">
           <Link href="/" className="flex items-center gap-2.5">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.webp"
               alt="KNK TEX"
-              width={36}
-              height={39}
+              width={267}
+              height={400}
               className="h-8 w-auto"
             />
             <span className="font-heading text-lg font-semibold">
