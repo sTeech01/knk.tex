@@ -102,10 +102,11 @@ export function CategoryGrid() {
                 sizes="(min-width: 1024px) 45vw, 90vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              {/* Затемнение прижато к низу плитки: на низкой полосе
-                  подкладочной ткани у плавного градиента не хватало
-                  высоты и подпись переставала читаться. */}
-              <div className="absolute inset-0 bg-gradient-to-t from-navy/95 from-10% via-navy/55 via-45% to-navy/5" />
+              {/* Затемнение нейтральное и прижато к низу плитки: синий
+                  оверлей перекрашивал ткань, а плитка должна показывать
+                  её настоящий цвет. Ступени подобраны так, чтобы подпись
+                  читалась и на низкой полосе подкладочной ткани. */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 from-12% via-black/32 via-50% to-transparent" />
               <div className="relative flex items-end justify-between p-6 text-white">
                 <div>
                   <p className="text-xs uppercase tracking-wider text-gold">
