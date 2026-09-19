@@ -20,6 +20,7 @@ export function FabricCard({
           alt={`${fabric.name} - портьерная ткань, ${fabric.category.toLowerCase()}`}
           fill
           priority={priority}
+          quality={88}
           sizes="(min-width: 1280px) 22vw, (min-width: 768px) 30vw, 90vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
         />

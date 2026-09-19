@@ -40,6 +40,7 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
           }
           fill
           priority
+          quality={88}
           sizes="(min-width: 1024px) 45vw, 90vw"
           className="object-cover"
         />

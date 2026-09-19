@@ -45,10 +45,13 @@ const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SA
       const id = safe(code);
       const src = path.join(dir, f);
 
-      await sharp(src).rotate().resize({ width: 900, withoutEnlargement: true })
-        .webp({ quality: 72 }).toFile(path.join(OUT, slug, id + '.webp'));
-      await sharp(src).rotate().resize({ width: 240, withoutEnlargement: true })
-        .webp({ quality: 78 }).toFile(path.join(OUT, slug, 'thumb', id + '.webp'));
+      // 1200px: слот показа ~584px, на retina-экранах это 1168px.
+      // effort 6 - максимальное усилие кодировщика: на переплетении ткани
+      // даёт заметно больше детали при том же качестве.
+      await sharp(src).rotate().resize({ width: 1200, withoutEnlargement: true })
+        .webp({ quality: 86, effort: 6 }).toFile(path.join(OUT, slug, id + '.webp'));
+      await sharp(src).rotate().resize({ width: 320, withoutEnlargement: true })
+        .webp({ quality: 82, effort: 6 }).toFile(path.join(OUT, slug, 'thumb', id + '.webp'));
 
       manifest[slug].push({ code: code === 'без номера' ? 'б/н' : code, id });
     }
@@ -61,10 +64,11 @@ const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SA
   for (const [rel, slug] of HERO) {
     const src = path.join(SRC, rel);
     if (!fs.existsSync(src)) { console.log('НЕТ ФАЙЛА:', rel); continue; }
-    await sharp(src).rotate().resize({ width: 1400, withoutEnlargement: true })
-      .webp({ quality: 82 }).toFile(path.join(OUT, slug, 'cover.webp'));
-    await sharp(src).rotate().resize({ width: 2000, withoutEnlargement: true })
-      .webp({ quality: 80 }).toFile(path.join('public/images/hero', slug + '.webp'));
+    await sharp(src).rotate().resize({ width: 1600, withoutEnlargement: true })
+      .webp({ quality: 86, effort: 6 }).toFile(path.join(OUT, slug, 'cover.webp'));
+    // Слайд героя разворачивается на всю ширину экрана - нужен запас.
+    await sharp(src).rotate().resize({ width: 2400, withoutEnlargement: true })
+      .webp({ quality: 84, effort: 6 }).toFile(path.join('public/images/hero', slug + '.webp'));
     heroes.push(slug);
   }
   console.log('обложки и слайды:', heroes.join(', '));

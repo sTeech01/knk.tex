@@ -99,6 +99,7 @@ export function CategoryGrid() {
                 src={image}
                 alt={`Категория тканей: ${category}`}
                 fill
+                quality={88}
                 sizes="(min-width: 1024px) 45vw, 90vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />

@@ -47,6 +47,7 @@ export function HeroBackground() {
             alt={heroSlides[index].alt}
             fill
             priority={index === 0}
+            quality={88}
             sizes="100vw"
             className="object-cover brightness-[0.75]"
           />
