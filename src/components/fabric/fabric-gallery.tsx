@@ -9,15 +9,17 @@ type View = {
   /** null - общий вид ткани, иначе номер оттенка из палитры поставщика. */
   code: string | null;
   image: string;
+  thumb: string;
   label: string;
 };
 
 export function FabricGallery({ fabric }: { fabric: Fabric }) {
   const views: View[] = [
-    { code: null, image: fabric.image, label: "Общий вид" },
+    { code: null, image: fabric.image, thumb: fabric.image, label: "Общий вид" },
     ...(fabric.colors ?? []).map((color) => ({
       code: color.code,
       image: color.image,
+      thumb: color.thumb,
       label: color.name ? `${color.code} - ${color.name}` : `Оттенок ${color.code}`,
     })),
   ];
@@ -72,10 +74,11 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
                 )}
               >
                 <Image
-                  src={view.image}
+                  src={view.thumb}
                   alt=""
                   fill
                   sizes="80px"
+                  unoptimized={view.thumb !== fabric.image}
                   className="object-cover"
                 />
                 {view.code && (

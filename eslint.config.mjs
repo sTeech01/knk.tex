@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Разовые Node-скрипты подготовки фотографий, вне сборки Next.
+    "scripts/**",
   ]),
 ]);
 

@@ -1,0 +1,75 @@
+const sharp = require('sharp');
+const fs = require('fs');
+const path = require('path');
+
+const SRC = 'public/images/Фото товара';
+const OUT = 'public/images/fabrics';
+
+// Сопоставление подтверждено точным совпадением количества фото
+// с colorsCount в src/data/fabrics.ts.
+const MAP = {
+  'Канвас Camilla':   'kanvas',
+  'Канвас Rosabella': 'kanvas-ali',
+  'Сатин Camilla':    'satin',
+  'Сатин Rosabella':  'satin-ali',
+};
+
+// Презентационное фото -> обложка ткани и слайд на главной.
+const HERO = [
+  ['Презентационные/Канвас camilla/114.JPG',    'kanvas'],
+  ['Презентационные/канвас Rosabella/44.JPG',   'kanvas-ali'],
+  ['Презентационные/Сатин Camilla/389.JPG',     'satin'],
+  ['Презентационные/Сатин  Rosabella_/119.JPG', 'satin-ali'],
+];
+
+const safe = (code) =>
+  code === 'без номера' ? 'bez-nomera'
+  : code.replace(/[^A-Za-z0-9._-]/g, '-');
+
+const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SAFE_INTEGER; };
+
+(async () => {
+  const manifest = {};
+
+  for (const [folder, slug] of Object.entries(MAP)) {
+    const dir = path.join(SRC, folder);
+    const files = fs.readdirSync(dir)
+      .filter(f => /\.(jpe?g|png)$/i.test(f))
+      .sort((a, b) => num(a) - num(b) || a.localeCompare(b, 'ru'));
+
+    fs.mkdirSync(path.join(OUT, slug, 'thumb'), { recursive: true });
+    manifest[slug] = [];
+
+    for (const f of files) {
+      const code = path.basename(f, path.extname(f));
+      const id = safe(code);
+      const src = path.join(dir, f);
+
+      await sharp(src).rotate().resize({ width: 900, withoutEnlargement: true })
+        .webp({ quality: 72 }).toFile(path.join(OUT, slug, id + '.webp'));
+      await sharp(src).rotate().resize({ width: 240, withoutEnlargement: true })
+        .webp({ quality: 78 }).toFile(path.join(OUT, slug, 'thumb', id + '.webp'));
+
+      manifest[slug].push({ code: code === 'без номера' ? 'б/н' : code, id });
+    }
+    console.log(slug, '->', files.length, 'оттенков');
+  }
+
+  // Презентационные: обложка ткани + слайд героя (шире, для полноэкранного фона).
+  fs.mkdirSync('public/images/hero', { recursive: true });
+  const heroes = [];
+  for (const [rel, slug] of HERO) {
+    const src = path.join(SRC, rel);
+    if (!fs.existsSync(src)) { console.log('НЕТ ФАЙЛА:', rel); continue; }
+    await sharp(src).rotate().resize({ width: 1400, withoutEnlargement: true })
+      .webp({ quality: 82 }).toFile(path.join(OUT, slug, 'cover.webp'));
+    await sharp(src).rotate().resize({ width: 2000, withoutEnlargement: true })
+      .webp({ quality: 80 }).toFile(path.join('public/images/hero', slug + '.webp'));
+    heroes.push(slug);
+  }
+  console.log('обложки и слайды:', heroes.join(', '));
+
+  fs.writeFileSync(path.join(__dirname, 'photo-manifest.json'),
+    JSON.stringify(manifest, null, 2), 'utf8');
+  console.log('ГОТОВО');
+})();

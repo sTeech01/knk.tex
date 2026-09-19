@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Исходники фотографий (JPEG с камеры, ~800 МБ).
+# В репозиторий и в деплой попадают только сжатые WebP из public/images/fabrics.
+/assets_src/Фото товара/
+/public/images/Фото товара/
+
