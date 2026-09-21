@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { fabrics } from "@/data/fabrics";
+import { categoryPages } from "@/data/categories";
 import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -10,11 +11,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/contacts`, changeFrequency: "yearly", priority: 0.5 },
   ];
 
+  const categoryRoutes: MetadataRoute.Sitemap = categoryPages.map((page) => ({
+    url: `${SITE_URL}/catalog/kategoriya/${page.slug}`,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
   const fabricRoutes: MetadataRoute.Sitemap = fabrics.map((fabric) => ({
     url: `${SITE_URL}/catalog/${fabric.slug}`,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...fabricRoutes];
+  return [...staticRoutes, ...categoryRoutes, ...fabricRoutes];
 }

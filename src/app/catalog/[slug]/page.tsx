@@ -21,6 +21,7 @@ import { PriceTag } from "@/components/shared/price-tag";
 import { ConsultationButton } from "@/components/shared/consultation-button";
 import { Badge } from "@/components/ui/badge";
 import { company } from "@/data/company";
+import { categoryHref } from "@/data/categories";
 import { fabricDescription, fabricKeywords } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -96,7 +97,7 @@ export default async function FabricPage({
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href={`/catalog?category=${encodeURIComponent(fabric.category)}`}>
+              <Link href={categoryHref(fabric.category)}>
                 {fabric.category}
               </Link>
             </BreadcrumbLink>

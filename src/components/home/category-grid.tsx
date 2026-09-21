@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { fabrics } from "@/data/fabrics";
+import { categoryHref, getCategoryPageByCategory } from "@/data/categories";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { homeCopy } from "@/data/copy";
@@ -89,7 +90,7 @@ export function CategoryGrid() {
             className={span}
           >
             <Link
-              href={`/catalog?category=${encodeURIComponent(category)}`}
+              href={categoryHref(category)}
               className={cn(
                 "group relative flex flex-col justify-end overflow-hidden rounded-lg",
                 height
@@ -97,7 +98,10 @@ export function CategoryGrid() {
             >
               <Image
                 src={image}
-                alt={`Категория тканей: ${category}`}
+                alt={
+                  getCategoryPageByCategory(category)?.imageAlt ??
+                  `Категория тканей: ${category}`
+                }
                 fill
                 quality={88}
                 sizes="(min-width: 1024px) 45vw, 90vw"
