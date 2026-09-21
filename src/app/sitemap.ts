@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { fabrics } from "@/data/fabrics";
 import { categoryPages } from "@/data/categories";
+import { cityPages } from "@/data/cities";
 import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -17,11 +18,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const cityRoutes: MetadataRoute.Sitemap = cityPages.map((page) => ({
+    url: `${SITE_URL}/portyernye-tkani-optom/${page.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
   const fabricRoutes: MetadataRoute.Sitemap = fabrics.map((fabric) => ({
     url: `${SITE_URL}/catalog/${fabric.slug}`,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...fabricRoutes];
+  return [...staticRoutes, ...categoryRoutes, ...cityRoutes, ...fabricRoutes];
 }

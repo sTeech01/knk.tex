@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { BadgeCheck } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { carriersCount, deliverySchedule } from "@/data/delivery-schedule";
 import { DeliveryGroupCard } from "@/components/delivery/delivery-group-card";
 import { breadcrumbJsonLd } from "@/lib/schema";
 import { company } from "@/data/company";
+import { cityPages } from "@/data/cities";
 import type { WeekDay } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -59,6 +61,19 @@ export default function DeliveryPage() {
             По России - отгрузка любой транспортной компанией из списка ниже.
           </p>
         </div>
+      </div>
+
+      <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+        <span className="text-muted-foreground">Поставки по городам:</span>
+        {cityPages.map((city) => (
+          <Link
+            key={city.slug}
+            href={`/portyernye-tkani-optom/${city.slug}`}
+            className="underline underline-offset-4 transition-colors hover:text-accent"
+          >
+            {city.name}
+          </Link>
+        ))}
       </div>
 
       <Tabs defaultValue="all" className="mt-10">
