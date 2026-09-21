@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,24 +10,36 @@ import { company } from "@/data/company";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+/** Текст заявки для мессенджера - менеджер видит всё без переспрашивания. */
+function whatsappLink(name: string, phone: string, comment: string): string {
+  const text = [
+    "Здравствуйте! Заявка с сайта KNK TEX.",
+    `Имя: ${name}`,
+    `Телефон: ${phone}`,
+    comment,
+  ]
+    .filter(Boolean)
+    .join("\n");
+  return `${company.whatsapp}?text=${encodeURIComponent(text)}`;
+}
+
 export function ConsultationForm({
   subject,
-  onSuccess,
   className,
 }: {
   subject?: string;
-  onSuccess?: () => void;
   className?: string;
 }) {
   const [status, setStatus] = useState<Status>("idle");
+  const [sent, setSent] = useState({ name: "", phone: "", comment: "" });
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const name = String(formData.get("name") ?? "");
-    const phone = String(formData.get("phone") ?? "");
-    const comment = String(formData.get("comment") ?? "");
+    const name = String(formData.get("name") ?? "").trim();
+    const phone = String(formData.get("phone") ?? "").trim();
+    const comment = String(formData.get("comment") ?? "").trim();
 
     setStatus("submitting");
     try {
@@ -38,9 +50,9 @@ export function ConsultationForm({
       });
       if (!response.ok) throw new Error("request_failed");
 
+      setSent({ name, phone, comment });
       setStatus("success");
       form.reset();
-      setTimeout(() => onSuccess?.(), 1800);
     } catch {
       setStatus("error");
     }
@@ -48,12 +60,24 @@ export function ConsultationForm({
 
   if (status === "success") {
     return (
-      <div className="flex flex-col items-center gap-3 py-8 text-center">
+      <div className="flex flex-col items-center gap-3 py-6 text-center">
         <CheckCircle2 className="size-10 text-accent" />
         <p className="font-heading text-lg">Заявка отправлена</p>
-        <p className="text-sm text-muted-foreground">
-          Мы свяжемся с вами в ближайшее рабочее время.
+        <p className="max-w-xs text-sm text-muted-foreground">
+          Менеджер свяжется с вами в рабочее время. Удобнее в мессенджере -
+          продублируйте заявку, ответим там.
         </p>
+        {/* Экран не закрывается сам: раньше окно пропадало через 1,8 с,
+            и кнопку мессенджера никто не успел бы увидеть. */}
+        <a
+          href={whatsappLink(sent.name, sent.phone, sent.comment)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex h-11 items-center gap-2 rounded-lg border border-border px-5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+        >
+          <MessageCircle className="size-4" />
+          Продублировать в WhatsApp
+        </a>
       </div>
     );
   }
@@ -83,7 +107,7 @@ export function ConsultationForm({
             name="comment"
             rows={3}
             defaultValue={subject ? `Интересует: ${subject}` : undefined}
-            placeholder="Например: интересует ткань и условия поставки"
+            placeholder="Например: ткань, номера оттенков, примерный метраж"
           />
         </div>
 
@@ -97,7 +121,11 @@ export function ConsultationForm({
           </p>
         )}
 
-        <Button type="submit" disabled={status === "submitting"} className="mt-1">
+        <Button
+          type="submit"
+          disabled={status === "submitting"}
+          className="mt-1 h-11 text-base"
+        >
           {status === "submitting" && (
             <Loader2 className="size-4 animate-spin" />
           )}

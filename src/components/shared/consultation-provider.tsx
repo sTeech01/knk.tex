@@ -55,18 +55,19 @@ export function ConsultationProvider({
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
+            {/* С карточки ткани человек пришёл с конкретным товаром - это
+                заявка, а не просьба о консультации. */}
             <DialogTitle className="font-heading text-2xl">
-              Получить консультацию
+              {subject ? "Оставить заявку" : "Получить консультацию"}
             </DialogTitle>
             <DialogDescription>
               Оставьте контакты - менеджер свяжется с вами в течение рабочего
               дня.
             </DialogDescription>
           </DialogHeader>
-          <ConsultationForm
-            subject={subject}
-            onSuccess={() => setIsOpen(false)}
-          />
+          {/* key сбрасывает форму при каждом открытии: иначе после отправки
+              следующая заявка открывалась бы на экране «спасибо». */}
+          <ConsultationForm key={`${isOpen}-${subject ?? ""}`} subject={subject} />
         </DialogContent>
       </Dialog>
     </ConsultationContext.Provider>

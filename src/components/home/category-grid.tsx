@@ -8,6 +8,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { homeCopy } from "@/data/copy";
 import type { FabricCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { plural } from "@/lib/plural";
 
 const categoryDescriptions: Record<FabricCategory, string> = {
   Бархат: "Плотный ворс и тяжёлая драпировка для парадных интерьеров.",
@@ -57,12 +58,7 @@ const tileLayout: {
 const defaultTile = { span: "lg:col-span-6", height: "h-72 lg:h-80" };
 
 function kindsLabel(count: number): string {
-  const mod10 = count % 10;
-  const mod100 = count % 100;
-  if (mod10 === 1 && mod100 !== 11) return `${count} вид`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
-    return `${count} вида`;
-  return `${count} видов`;
+  return `${count} ${plural(count, ["вид", "вида", "видов"])}`;
 }
 
 export function CategoryGrid() {

@@ -19,7 +19,10 @@ import { MetersCalculator } from "@/components/fabric/meters-calculator";
 import { SwatchBookOffer } from "@/components/fabric/swatch-book-offer";
 import { RelatedFabrics } from "@/components/fabric/related-fabrics";
 import { PriceTag } from "@/components/shared/price-tag";
-import { ConsultationButton } from "@/components/shared/consultation-button";
+import {
+  FabricOrderButton,
+  FabricSelectionProvider,
+} from "@/components/fabric/fabric-selection";
 import { Badge } from "@/components/ui/badge";
 import { company } from "@/data/company";
 import { categoryHref } from "@/data/categories";
@@ -110,54 +113,53 @@ export default async function FabricPage({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-16">
-        <FabricGallery fabric={fabric} />
+      <FabricSelectionProvider>
+        <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <FabricGallery fabric={fabric} />
 
-        <div className="flex flex-col gap-6">
-          <div>
-            <Badge variant="secondary" className="mb-3">
-              {fabric.category}
-            </Badge>
-            <h1 className="font-heading text-3xl sm:text-4xl">{fabric.name}</h1>
-            <p className="mt-3 text-muted-foreground">{fabric.description}</p>
-          </div>
+          <div className="flex flex-col gap-6">
+            <div>
+              <Badge variant="secondary" className="mb-3">
+                {fabric.category}
+              </Badge>
+              <h1 className="font-heading text-3xl sm:text-4xl">{fabric.name}</h1>
+              <p className="mt-3 text-muted-foreground">{fabric.description}</p>
+            </div>
 
-          <ul className="flex flex-col gap-2">
-            {fabric.highlights.map((highlight) => (
-              <li key={highlight} className="flex items-start gap-2 text-sm">
-                <Check className="mt-0.5 size-4 shrink-0 text-accent" />
-                {highlight}
-              </li>
-            ))}
-          </ul>
+            <ul className="flex flex-col gap-2">
+              {fabric.highlights.map((highlight) => (
+                <li key={highlight} className="flex items-start gap-2 text-sm">
+                  <Check className="mt-0.5 size-4 shrink-0 text-accent" />
+                  {highlight}
+                </li>
+              ))}
+            </ul>
 
-          <PriceTag priceUsd={fabric.priceUsd} rateUsdToRub={rateUsdToRub} size="lg" />
+            <PriceTag priceUsd={fabric.priceUsd} rateUsdToRub={rateUsdToRub} size="lg" />
 
-          <div>
-            <ConsultationButton
-              subject={fabric.name}
-              className="h-12 w-full bg-navy text-base font-semibold text-white hover:bg-navy/90 sm:w-auto sm:px-10"
-            >
-              Получить консультацию
-            </ConsultationButton>
+            <div>
+              <FabricOrderButton
+                fabricName={fabric.name}
+                hasPalette={(fabric.colors?.length ?? 0) > 0}
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Минимальный заказ - {company.minOrderLabel}.
+              </p>
+            </div>
 
-            <p className="mt-3 text-xs text-muted-foreground">
-              Минимальный заказ - {company.minOrderLabel}.
-            </p>
-          </div>
+            <SwatchBookOffer
+              fabricName={fabric.name}
+              colorsCount={fabric.colorsCount}
+            />
 
-          <SwatchBookOffer
-            fabricName={fabric.name}
-            colorsCount={fabric.colorsCount}
-          />
-
-          <div className="flex flex-col gap-6 rounded-lg border border-border bg-muted/40 p-6">
-            <FabricSpecs fabric={fabric} />
-            <div className="border-t border-border" />
-            <MetersCalculator priceUsd={fabric.priceUsd} rateUsdToRub={rateUsdToRub} />
+            <div className="flex flex-col gap-6 rounded-lg border border-border bg-muted/40 p-6">
+              <FabricSpecs fabric={fabric} />
+              <div className="border-t border-border" />
+              <MetersCalculator priceUsd={fabric.priceUsd} rateUsdToRub={rateUsdToRub} />
+            </div>
           </div>
         </div>
-      </div>
+      </FabricSelectionProvider>
 
       <RelatedFabrics
         currentSlug={fabric.slug}

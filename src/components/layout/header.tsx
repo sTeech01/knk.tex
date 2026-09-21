@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { navLinks } from "@/lib/nav";
+import { Phone } from "lucide-react";
 import { ConsultationButton } from "@/components/shared/consultation-button";
+import { company } from "@/data/company";
 
 export function Header() {
   return (
@@ -33,7 +35,15 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-5 md:flex">
+          {/* Оптовик часто просто звонит - номер не должен прятаться в подвале. */}
+          <a
+            href={company.phoneHref}
+            className="hidden items-center gap-2 text-sm font-semibold whitespace-nowrap transition-colors hover:text-accent lg:flex"
+          >
+            <Phone className="size-4 text-accent" />
+            {company.phone}
+          </a>
           <ConsultationButton className="h-9 bg-navy px-4 text-sm font-medium text-white hover:bg-navy/90">
             Получить консультацию
           </ConsultationButton>

@@ -1,17 +1,16 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { fabrics } from "@/data/fabrics";
+import { photographedFabrics } from "@/data/fabrics";
 import { FabricCard } from "@/components/shared/fabric-card";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { homeCopy } from "@/data/copy";
 
-const featuredSlugs = ["barhat-glamour", "dvuhstoronniy-blekaut", "satin-ali", "kanvas-ali"];
-
 export function FeaturedFabrics({ rateUsdToRub }: { rateUsdToRub: number }) {
-  const featured = featuredSlugs
-    .map((slug) => fabrics.find((fabric) => fabric.slug === slug))
-    .filter((fabric): fabric is (typeof fabrics)[number] => Boolean(fabric));
+  // Только ткани с настоящей съёмкой: витрина с заглушками выглядит
+  // недоделанной. Когда отснимут остальные, они появятся здесь сами.
+  const featured = photographedFabrics.slice(0, 4);
+  if (featured.length === 0) return null;
 
   return (
     <section className="bg-mist py-28">

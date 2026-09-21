@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import type { Fabric } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useFabricSelection } from "@/components/fabric/fabric-selection";
 
 export function FabricGallery({ fabric }: { fabric: Fabric }) {
   const colors = fabric.colors ?? [];
@@ -15,6 +16,13 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
   // пронумерованные оттенки; при выборе цвета кадр меняется на оттенок.
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const activeColor = activeIndex === null ? null : colors[activeIndex];
+  // Выбранный номер уходит наружу - в кнопку заявки на этой же карточке.
+  const { setCode } = useFabricSelection();
+
+  function selectColor(index: number) {
+    setActiveIndex(index);
+    setCode(colors[index]?.code ?? null);
+  }
 
   // Цвет презентационного фото известен - показываем его номер, чтобы
   // кадр не выглядел безымянным отдельным цветом.
@@ -79,7 +87,7 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
                 <button
                   key={color.code}
                   type="button"
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => selectColor(index)}
                   aria-pressed={index === activeIndex}
                   aria-label={label}
                   title={label}
