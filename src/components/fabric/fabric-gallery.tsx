@@ -5,62 +5,32 @@ import Image from "next/image";
 import type { Fabric } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-type View = {
-  /** Номер оттенка; null - раскладка или ткань без отснятой палитры. */
-  code: string | null;
-  image: string;
-  thumb: string;
-  label: string;
-};
-
 export function FabricGallery({ fabric }: { fabric: Fabric }) {
   const colors = fabric.colors ?? [];
   const hasPalette = colors.length > 0;
 
-  // В палитре только пронумерованные оттенки. Безымянный «общий вид»
-  // убран: покупатели принимали его за отдельный цвет без номера.
-  // Раскладка (набор образцов) встаёт первой, когда появится её фото.
-  const views: View[] = hasPalette
-    ? [
-        ...(fabric.swatchImage
-          ? [
-              {
-                code: null,
-                image: fabric.swatchImage,
-                thumb: fabric.swatchImage,
-                label: "Раскладка",
-              },
-            ]
-          : []),
-        ...colors.map((color) => ({
-          code: color.code,
-          image: color.image,
-          thumb: color.thumb,
-          label: color.name
-            ? `${color.code} - ${color.name}`
-            : `Оттенок ${color.code}`,
-        })),
-      ]
-    : [{ code: null, image: fabric.image, thumb: fabric.image, label: fabric.name }];
+  // null - презентационное фото. Карточка открывается на нём: это
+  // постановочный кадр, а не снимок оттенка, и именно его заказчик хочет
+  // видеть первым. В сетку палитры он не попадает - там только
+  // пронумерованные оттенки; при выборе цвета кадр меняется на оттенок.
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const activeColor = activeIndex === null ? null : colors[activeIndex];
 
-  // Открываемся на оттенке с презентационного фото: первый кадр остаётся
-  // самым выигрышным, но уже с настоящим номером.
-  const coverIndex = fabric.coverCode
-    ? views.findIndex((view) => view.code === fabric.coverCode)
-    : -1;
-  const [activeIndex, setActiveIndex] = useState(Math.max(0, coverIndex));
-  const active = views[activeIndex] ?? views[0];
+  // Цвет презентационного фото известен - показываем его номер, чтобы
+  // кадр не выглядел безымянным отдельным цветом.
+  const badgeCode = activeColor ? activeColor.code : fabric.coverCode;
+  const mainImage = activeColor ? activeColor.image : fabric.image;
 
   return (
     <div>
       <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted lg:aspect-[3/4]">
-        {/* Миниатюра нового оттенка уже загружена сеткой палитры - она
+        {/* Миниатюра выбранного оттенка уже загружена сеткой палитры - она
             появляется сразу по клику, пока догружается полный кадр. Без
             неё браузер держал старое фото до загрузки нового, и клик
             выглядел так, будто ничего не произошло. */}
-        {hasPalette && (
+        {activeColor && (
           <Image
-            src={active.thumb}
+            src={activeColor.thumb}
             alt=""
             aria-hidden
             fill
@@ -70,13 +40,13 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
           />
         )}
         <Image
-          // Ключ пересоздаёт картинку при смене оттенка: новый кадр
-          // стартует прозрачным, и под ним видна миниатюра.
-          key={active.image}
-          src={active.image}
+          // Ключ пересоздаёт картинку при смене кадра: новый стартует
+          // прозрачным, и под ним видна миниатюра.
+          key={mainImage}
+          src={mainImage}
           alt={
-            active.code
-              ? `${fabric.name}, оттенок ${active.code} - портьерная ткань, ${fabric.category.toLowerCase()}`
+            badgeCode
+              ? `${fabric.name}, оттенок ${badgeCode} - портьерная ткань, ${fabric.category.toLowerCase()}`
               : `${fabric.name} - портьерная ткань, ${fabric.category.toLowerCase()}`
           }
           fill
@@ -87,9 +57,9 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
           className="object-cover"
         />
 
-        {active.code && (
+        {badgeCode && (
           <span className="absolute left-3 top-3 rounded-md bg-navy/85 px-2.5 py-1 text-xs font-semibold text-white">
-            Оттенок {active.code}
+            Оттенок {badgeCode}
           </span>
         )}
       </div>
@@ -101,34 +71,39 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
           </p>
 
           <div className="mt-3 grid max-h-72 grid-cols-5 gap-2 overflow-y-auto pr-1 sm:grid-cols-6 lg:grid-cols-7">
-            {views.map((view, index) => (
-              <button
-                key={`${view.code ?? view.label}-${index}`}
-                type="button"
-                onClick={() => setActiveIndex(index)}
-                aria-pressed={index === activeIndex}
-                aria-label={view.label}
-                title={view.label}
-                className={cn(
-                  "group relative aspect-square overflow-hidden rounded-md border-2 transition-colors",
-                  index === activeIndex
-                    ? "border-accent"
-                    : "border-transparent hover:border-border"
-                )}
-              >
-                <Image
-                  src={view.thumb}
-                  alt=""
-                  fill
-                  sizes="80px"
-                  unoptimized
-                  className="object-cover"
-                />
-                <span className="absolute inset-x-0 bottom-0 bg-navy/75 py-0.5 text-center text-[10px] font-medium leading-tight text-white">
-                  {view.code ?? view.label}
-                </span>
-              </button>
-            ))}
+            {colors.map((color, index) => {
+              const label = color.name
+                ? `${color.code} - ${color.name}`
+                : `Оттенок ${color.code}`;
+              return (
+                <button
+                  key={color.code}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-pressed={index === activeIndex}
+                  aria-label={label}
+                  title={label}
+                  className={cn(
+                    "group relative aspect-square overflow-hidden rounded-md border-2 transition-colors",
+                    index === activeIndex
+                      ? "border-accent"
+                      : "border-transparent hover:border-border"
+                  )}
+                >
+                  <Image
+                    src={color.thumb}
+                    alt=""
+                    fill
+                    sizes="80px"
+                    unoptimized
+                    className="object-cover"
+                  />
+                  <span className="absolute inset-x-0 bottom-0 bg-navy/75 py-0.5 text-center text-[10px] font-medium leading-tight text-white">
+                    {color.code}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
