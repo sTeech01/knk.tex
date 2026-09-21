@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Calculator } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { formatRub, formatUsd } from "@/lib/format";
+import { formatRub } from "@/lib/format";
 import { convertUsdToRub } from "@/lib/currency";
 import { company } from "@/data/company";
 
@@ -50,8 +50,7 @@ export function MetersCalculator({
           <p className="text-xs uppercase tracking-wide text-muted-foreground">
             Ориентировочная стоимость
           </p>
-          <p className="font-heading text-2xl">{formatUsd(totalUsd)}</p>
-          <p className="text-sm text-muted-foreground">≈ {formatRub(totalRub)}</p>
+          <p className="font-heading text-2xl">{formatRub(totalRub)}</p>
         </div>
       </div>
 

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { FiltersPanel } from "@/components/catalog/filters-panel";
 
-export function MobileFilters() {
+export function MobileFilters({ rateUsdToRub }: { rateUsdToRub: number }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -29,7 +29,7 @@ export function MobileFilters() {
           <div className="mx-auto h-1.5 w-10 shrink-0 rounded-full bg-border" />
           <SheetTitle className="sr-only">Фильтры каталога</SheetTitle>
           <div className="px-4 pb-8 pt-2">
-            <FiltersPanel />
+            <FiltersPanel rateUsdToRub={rateUsdToRub} />
           </div>
         </SheetContent>
       </Sheet>

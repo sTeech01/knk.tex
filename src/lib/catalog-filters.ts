@@ -1,26 +1,29 @@
-import type { Fabric, FabricCategory, FabricOrigin, ColorFamily } from "@/lib/types";
+import type { Fabric, FabricCategory, ColorFamily } from "@/lib/types";
+import { convertUsdToRub } from "@/lib/currency";
 
 export type CatalogSort = "default" | "price-asc" | "price-desc" | "density-desc";
 
 export type CatalogFilters = {
   query: string;
   categories: FabricCategory[];
-  origins: FabricOrigin[];
   colorFamilies: ColorFamily[];
   widths: number[];
+  /** Границы цены - в рублях: покупатель видит только рублёвые цены. */
   priceMin?: number;
   priceMax?: number;
   sort: CatalogSort;
 };
 
-export function filterFabrics(fabrics: Fabric[], filters: CatalogFilters): Fabric[] {
+export function filterFabrics(
+  fabrics: Fabric[],
+  filters: CatalogFilters,
+  rateUsdToRub: number
+): Fabric[] {
   const query = filters.query.trim().toLowerCase();
 
   const filtered = fabrics.filter((fabric) => {
     if (query && !fabric.name.toLowerCase().includes(query)) return false;
     if (filters.categories.length && !filters.categories.includes(fabric.category))
-      return false;
-    if (filters.origins.length && !filters.origins.includes(fabric.origin))
       return false;
     if (
       filters.colorFamilies.length &&
@@ -29,9 +32,10 @@ export function filterFabrics(fabrics: Fabric[], filters: CatalogFilters): Fabri
       return false;
     if (filters.widths.length && !filters.widths.includes(fabric.widthCm))
       return false;
-    if (filters.priceMin !== undefined && fabric.priceUsd < filters.priceMin)
+    const priceRub = convertUsdToRub(fabric.priceUsd, rateUsdToRub);
+    if (filters.priceMin !== undefined && priceRub < filters.priceMin)
       return false;
-    if (filters.priceMax !== undefined && fabric.priceUsd > filters.priceMax)
+    if (filters.priceMax !== undefined && priceRub > filters.priceMax)
       return false;
     return true;
   });

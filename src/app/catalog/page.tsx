@@ -9,12 +9,12 @@ import { FiltersPanel } from "@/components/catalog/filters-panel";
 import { MobileFilters } from "@/components/catalog/mobile-filters";
 import { FabricGrid } from "@/components/catalog/fabric-grid";
 import { breadcrumbJsonLd } from "@/lib/schema";
-import type { FabricCategory, FabricOrigin, ColorFamily } from "@/lib/types";
+import type { FabricCategory, ColorFamily } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Каталог портьерных тканей",
   description:
-    "Каталог портьерных тканей KNK TEX: бархат, сатин, канвас, блэкаут, димаут и подкладочные ткани из Китая и Турции. Поиск, фильтры по категории, ширине, плотности и цене.",
+    "Каталог портьерных тканей KNK TEX: бархат, сатин, канвас, блэкаут, димаут и подкладочные ткани. Поиск, фильтры по категории, ширине, плотности и цене.",
   alternates: { canonical: "/catalog" },
 };
 
@@ -36,7 +36,6 @@ export default async function CatalogPage({
   const filters: CatalogFilters = {
     query: getParam("q") ?? "",
     categories: parseList<FabricCategory>(getParam("category")),
-    origins: parseList<FabricOrigin>(getParam("origin")),
     colorFamilies: parseList<ColorFamily>(getParam("color")),
     widths: parseList(getParam("width")).map(Number),
     priceMin: getParam("priceMin") ? Number(getParam("priceMin")) : undefined,
@@ -44,10 +43,8 @@ export default async function CatalogPage({
     sort: (getParam("sort") as CatalogSort) ?? "default",
   };
 
-  const [rateUsdToRub, filteredFabrics] = await Promise.all([
-    getUsdToRubRate(),
-    Promise.resolve(filterFabrics(fabrics, filters)),
-  ]);
+  const rateUsdToRub = await getUsdToRubRate();
+  const filteredFabrics = filterFabrics(fabrics, filters, rateUsdToRub);
 
   const jsonLd = breadcrumbJsonLd([
     { name: "Главная", path: "/" },
@@ -77,7 +74,7 @@ export default async function CatalogPage({
           <SearchBar />
         </div>
         <div className="flex gap-3">
-          <MobileFilters />
+          <MobileFilters rateUsdToRub={rateUsdToRub} />
           <SortSelect />
         </div>
       </div>
@@ -85,7 +82,7 @@ export default async function CatalogPage({
       <div className="mt-10 grid gap-10 lg:grid-cols-[240px_1fr]">
         <aside className="hidden lg:block">
           <div className="sticky top-28">
-            <FiltersPanel />
+            <FiltersPanel rateUsdToRub={rateUsdToRub} />
           </div>
         </aside>
 

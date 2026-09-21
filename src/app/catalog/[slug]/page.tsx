@@ -153,7 +153,11 @@ export default async function FabricPage({
         </div>
       </div>
 
-      <RelatedFabrics currentSlug={fabric.slug} category={fabric.category} />
+      <RelatedFabrics
+        currentSlug={fabric.slug}
+        category={fabric.category}
+        rateUsdToRub={rateUsdToRub}
+      />
     </div>
   );
 }

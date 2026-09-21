@@ -6,9 +6,11 @@ import type { Fabric } from "@/lib/types";
 export function RelatedFabrics({
   currentSlug,
   category,
+  rateUsdToRub,
 }: {
   currentSlug: string;
   category: Fabric["category"];
+  rateUsdToRub: number;
 }) {
   const related = fabrics
     .filter((fabric) => fabric.slug !== currentSlug)
@@ -22,7 +24,7 @@ export function RelatedFabrics({
       <SectionHeading eyebrow="Каталог" title="Похожие ткани" />
       <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
         {related.map((fabric) => (
-          <FabricCardCompact key={fabric.slug} fabric={fabric} />
+          <FabricCardCompact key={fabric.slug} fabric={fabric} rateUsdToRub={rateUsdToRub} />
         ))}
       </div>
     </section>

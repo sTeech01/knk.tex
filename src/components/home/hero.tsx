@@ -36,7 +36,7 @@ export function Hero() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs uppercase tracking-wider text-mist/45">
           <span>{fabrics.length} тканей в каталоге</span>
           <span className="size-1 rounded-full bg-mist/25" aria-hidden />
-          <span>Китай и Турция - напрямую</span>
+          <span>Доставка по всей России</span>
           <span className="size-1 rounded-full bg-mist/25" aria-hidden />
           <span>Заказ {company.minOrderLabel}</span>
         </div>

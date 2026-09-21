@@ -35,8 +35,8 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
           src={active.image}
           alt={
             active.code
-              ? `${fabric.name}, оттенок ${active.code} - ${fabric.category.toLowerCase()}, ${fabric.origin}`
-              : `${fabric.name} - портьерная ткань, ${fabric.category.toLowerCase()}, ${fabric.origin}`
+              ? `${fabric.name}, оттенок ${active.code} - портьерная ткань, ${fabric.category.toLowerCase()}`
+              : `${fabric.name} - портьерная ткань, ${fabric.category.toLowerCase()}`
           }
           fill
           priority

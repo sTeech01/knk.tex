@@ -1,12 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Fabric } from "@/lib/types";
-import { formatUsd } from "@/lib/format";
+import { formatRub } from "@/lib/format";
+import { convertUsdToRub } from "@/lib/currency";
 
 export function FabricCardCompact({
   fabric,
+  rateUsdToRub,
 }: {
   fabric: Fabric;
+  rateUsdToRub: number;
 }) {
   return (
     <Link href={`/catalog/${fabric.slug}`} className="group flex flex-col">
@@ -24,7 +27,7 @@ export function FabricCardCompact({
           {fabric.name}
         </p>
         <p className="mt-0.5 text-xs text-muted-foreground">
-          {formatUsd(fabric.priceUsd)} / м
+          {formatRub(convertUsdToRub(fabric.priceUsd, rateUsdToRub))} / м
         </p>
       </div>
     </Link>

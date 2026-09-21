@@ -1,6 +1,7 @@
 import { company } from "@/data/company";
 import type { Fabric } from "@/lib/types";
 import { SITE_URL } from "@/lib/site";
+import { convertUsdToRub } from "@/lib/currency";
 
 export function organizationJsonLd() {
   return {
@@ -39,13 +40,14 @@ export function productJsonLd(fabric: Fabric, rateUsdToRub: number) {
     description: fabric.shortDescription,
     category: fabric.category,
     image: `${SITE_URL}${fabric.image}`,
-    countryOfOrigin: fabric.origin,
     // availability намеренно не указывается: по ТЗ сайт не показывает остатки
     // ни в интерфейсе, ни в разметке - иначе поисковики выводят «В наличии».
     offers: {
       "@type": "Offer",
-      priceCurrency: "USD",
-      price: fabric.priceUsd.toFixed(2),
+      // Цена в разметке совпадает с показанной покупателю - в рублях
+      // по курсу ЦБ. Расхождение с видимой ценой поисковики считают ошибкой.
+      priceCurrency: "RUB",
+      price: convertUsdToRub(fabric.priceUsd, rateUsdToRub).toFixed(0),
       url: `${SITE_URL}/catalog/${fabric.slug}`,
       eligibleQuantity: {
         "@type": "QuantitativeValue",
@@ -68,11 +70,6 @@ export function productJsonLd(fabric: Fabric, rateUsdToRub: number) {
         "@type": "PropertyValue",
         name: "Количество цветов",
         value: fabric.colorsCount,
-      },
-      {
-        "@type": "PropertyValue",
-        name: "Курс USD/RUB на момент просмотра",
-        value: rateUsdToRub.toFixed(2),
       },
     ],
   };

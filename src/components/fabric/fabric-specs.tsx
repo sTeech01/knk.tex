@@ -6,7 +6,6 @@ export function FabricSpecs({ fabric }: { fabric: Fabric }) {
     { label: "Ширина полотна", value: `${fabric.widthCm} см` },
     { label: "Плотность", value: `${fabric.densityGsm} г/м²` },
     { label: "Количество цветов", value: fabric.colorsCount },
-    { label: "Производство", value: fabric.origin },
   ];
 
   return (

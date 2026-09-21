@@ -14,12 +14,14 @@ import {
 import { useCatalogQuery } from "@/hooks/use-catalog-query";
 import {
   fabricCategories,
-  fabricOrigins,
   colorFamilyOptions,
   widthOptions,
   priceRange,
 } from "@/data/fabrics";
-import { formatUsd } from "@/lib/format";
+import { formatRub } from "@/lib/format";
+
+/** Шаг ползунка и округление границ - по 50 ₽, чтобы не было «1 237 ₽». */
+const PRICE_STEP_RUB = 50;
 
 function CheckboxGroup({
   paramKey,
@@ -55,10 +57,15 @@ function CheckboxGroup({
   );
 }
 
-function PriceFilter() {
+function PriceFilter({ rateUsdToRub }: { rateUsdToRub: number }) {
   const { searchParams, setParam } = useCatalogQuery();
-  const currentMin = Number(searchParams.get("priceMin") ?? priceRange.min);
-  const currentMax = Number(searchParams.get("priceMax") ?? priceRange.max);
+  // Диапазон строится в рублях по сегодняшнему курсу ЦБ.
+  const minRub =
+    Math.floor((priceRange.min * rateUsdToRub) / PRICE_STEP_RUB) * PRICE_STEP_RUB;
+  const maxRub =
+    Math.ceil((priceRange.max * rateUsdToRub) / PRICE_STEP_RUB) * PRICE_STEP_RUB;
+  const currentMin = Number(searchParams.get("priceMin") ?? minRub);
+  const currentMax = Number(searchParams.get("priceMax") ?? maxRub);
   const [localValue, setLocalValue] = useState<[number, number]>([
     currentMin,
     currentMax,
@@ -67,9 +74,9 @@ function PriceFilter() {
   return (
     <div className="flex flex-col gap-4 px-1">
       <Slider
-        min={priceRange.min}
-        max={priceRange.max}
-        step={0.5}
+        min={minRub}
+        max={maxRub}
+        step={PRICE_STEP_RUB}
         value={localValue}
         onValueChange={(value) => setLocalValue(value as [number, number])}
         onValueCommit={(value) => {
@@ -78,14 +85,14 @@ function PriceFilter() {
         }}
       />
       <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>{formatUsd(localValue[0])}</span>
-        <span>{formatUsd(localValue[1])}</span>
+        <span>{formatRub(localValue[0])}</span>
+        <span>{formatRub(localValue[1])}</span>
       </div>
     </div>
   );
 }
 
-export function FiltersPanel() {
+export function FiltersPanel({ rateUsdToRub }: { rateUsdToRub: number }) {
   const { searchParams, clearAll } = useCatalogQuery();
   const hasFilters = Array.from(searchParams.keys()).length > 0;
 
@@ -107,19 +114,12 @@ export function FiltersPanel() {
 
       <Accordion
         type="multiple"
-        defaultValue={["category", "origin", "width", "color", "price"]}
+        defaultValue={["category", "width", "color", "price"]}
       >
         <AccordionItem value="category">
           <AccordionTrigger>Категория</AccordionTrigger>
           <AccordionContent>
             <CheckboxGroup paramKey="category" options={fabricCategories} />
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="origin">
-          <AccordionTrigger>Производство</AccordionTrigger>
-          <AccordionContent>
-            <CheckboxGroup paramKey="origin" options={fabricOrigins} />
           </AccordionContent>
         </AccordionItem>
 
@@ -142,9 +142,9 @@ export function FiltersPanel() {
         </AccordionItem>
 
         <AccordionItem value="price">
-          <AccordionTrigger>Цена, $/м</AccordionTrigger>
+          <AccordionTrigger>Цена, ₽/м</AccordionTrigger>
           <AccordionContent>
-            <PriceFilter />
+            <PriceFilter rateUsdToRub={rateUsdToRub} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

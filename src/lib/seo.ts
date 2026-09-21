@@ -28,8 +28,7 @@ export const siteKeywords = [
   // Формат поставки - совпадает с реальной моделью продаж.
   "канвас купить рулон",
   "канвас метражом купить",
-  // Происхождение и характеристики.
-  "канвас турция купить",
+  // Характеристики.
   "канвас плотный купить",
   "канвас блэкаут купить",
 ] as const;
@@ -47,7 +46,6 @@ export function fabricKeywords(fabric: Fabric): string[] {
     `купить ${category} для штор`,
     `портьерная ткань ${category}`,
     `${category} купить рулон`,
-    `${category} ${fabric.origin.toLowerCase()} купить`,
     fabric.name.toLowerCase(),
   ];
 }
@@ -57,7 +55,7 @@ export function fabricDescription(fabric: Fabric): string {
   return [
     `${fabric.name} оптом от рулона.`,
     `Ширина полотна ${fabric.widthCm} см, плотность ${fabric.densityGsm} г/м²,`,
-    `${fabric.colorsCount} оттенков, производство - ${fabric.origin}.`,
+    `${fabric.colorsCount} оттенков.`,
     fabric.shortDescription,
   ].join(" ");
 }

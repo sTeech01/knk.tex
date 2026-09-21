@@ -1,7 +1,12 @@
-import { formatRub, formatUsd } from "@/lib/format";
+import { formatRub } from "@/lib/format";
 import { convertUsdToRub } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 
+/**
+ * Цена показывается только в рублях. Базовая цена хранится в долларах
+ * и пересчитывается по курсу ЦБ на день открытия страницы, но сам
+ * долларовый ценник покупателю не показывается - по решению заказчика.
+ */
 export function PriceTag({
   priceUsd,
   rateUsdToRub,
@@ -25,13 +30,10 @@ export function PriceTag({
           size === "lg" && "text-3xl"
         )}
       >
-        {formatUsd(priceUsd)}
+        {formatRub(rub)}
         <span className="text-muted-foreground font-sans text-[0.55em] font-normal">
           {" "}/ м
         </span>
-      </span>
-      <span className="text-sm text-muted-foreground">
-        ≈ {formatRub(rub)} / м
       </span>
     </div>
   );

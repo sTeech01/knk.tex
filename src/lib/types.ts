@@ -40,6 +40,11 @@ export type Fabric = {
   slug: string;
   name: string;
   category: FabricCategory;
+  /**
+   * Страна производства - только для внутреннего учёта. На сайте не
+   * выводится нигде (ни в карточках, ни в фильтрах, ни в разметке):
+   * по решению заказчика этот вопрос обсуждается с клиентом лично.
+   */
   origin: FabricOrigin;
   widthCm: number;
   densityGsm: number;
