@@ -1,15 +1,13 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { HeroBackground } from "@/components/home/hero-background";
+import { HeroSlider } from "@/components/home/hero-slider";
 import { homeCopy } from "@/data/copy";
 import { company } from "@/data/company";
 import { fabrics } from "@/data/fabrics";
 
 export function Hero() {
   return (
-    <section className="relative flex items-center justify-center overflow-hidden bg-navy">
-      <HeroBackground />
-
+    <HeroSlider>
       <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center lg:py-28">
         <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-gold sm:gap-4 sm:tracking-[0.3em]">
           <span className="hidden h-px w-8 bg-gold/40 sm:block" />
@@ -41,6 +39,6 @@ export function Hero() {
           <span>Заказ {company.minOrderLabel}</span>
         </div>
       </div>
-    </section>
+    </HeroSlider>
   );
 }

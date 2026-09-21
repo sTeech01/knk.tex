@@ -16,6 +16,7 @@ import { breadcrumbJsonLd, productJsonLd } from "@/lib/schema";
 import { FabricGallery } from "@/components/fabric/fabric-gallery";
 import { FabricSpecs } from "@/components/fabric/fabric-specs";
 import { MetersCalculator } from "@/components/fabric/meters-calculator";
+import { SwatchBookOffer } from "@/components/fabric/swatch-book-offer";
 import { RelatedFabrics } from "@/components/fabric/related-fabrics";
 import { PriceTag } from "@/components/shared/price-tag";
 import { ConsultationButton } from "@/components/shared/consultation-button";
@@ -144,6 +145,11 @@ export default async function FabricPage({
               Минимальный заказ - {company.minOrderLabel}.
             </p>
           </div>
+
+          <SwatchBookOffer
+            fabricName={fabric.name}
+            colorsCount={fabric.colorsCount}
+          />
 
           <div className="flex flex-col gap-6 rounded-lg border border-border bg-muted/40 p-6">
             <FabricSpecs fabric={fabric} />

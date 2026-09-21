@@ -19,10 +19,10 @@ const categoryDescriptions: Record<FabricCategory, string> = {
 };
 
 /**
- * Порядок и размер плиток задаются вручную - по ходовости категории,
- * а не по порядку в товарной матрице. Заказчик назвал канвас самым
- * ходовым, поэтому он занимает крупную плитку наверху, а подкладочная
- * ткань - низкую полосу внизу: её берут реже всего.
+ * Порядок и размер плиток задаются вручную, а не по порядку в товарной
+ * матрице. Канвас - самый ходовой, он крупно наверху. Внизу крупно
+ * бархат: заказчик считает его самым презентабельным. Подкладочная
+ * ткань ушла в обычный квадрат - широкой полосой она смотрелась бедно.
  *
  * Раскладка на десктопе: 12 / 4+4+4 / 12.
  */
@@ -39,16 +39,31 @@ const tileLayout: {
     height: "h-80 lg:h-[26rem]",
   },
   { category: "Блэкаут", span: "lg:col-span-4", height: "h-72 lg:h-80" },
-  { category: "Бархат", span: "lg:col-span-4", height: "h-72 lg:h-80" },
   { category: "Сатин", span: "lg:col-span-4", height: "h-72 lg:h-80" },
   {
     category: "Подкладочная ткань",
+    span: "lg:col-span-4",
+    height: "h-72 lg:h-80",
+  },
+  {
+    category: "Бархат",
+    // На планшете бархат в паре с подкладочной, а не во всю ширину:
+    // иначе подкладочная осталась бы одна с пустой половиной ряда.
     span: "lg:col-span-12",
-    height: "h-44 lg:h-48",
+    height: "h-72 lg:h-96",
   },
 ];
 
 const defaultTile = { span: "lg:col-span-6", height: "h-72 lg:h-80" };
+
+function kindsLabel(count: number): string {
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 === 1 && mod100 !== 11) return `${count} вид`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
+    return `${count} вида`;
+  return `${count} видов`;
+}
 
 export function CategoryGrid() {
   const byCategory = new Map<FabricCategory, { count: number; image: string }>();
@@ -114,11 +129,13 @@ export function CategoryGrid() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 from-12% via-black/32 via-50% to-transparent" />
               <div className="relative flex items-end justify-between p-6 text-white">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-gold">
-                    {count} {count === 1 ? "вид" : "вида"} в каталоге
-                  </p>
-                  <h3 className="mt-1 font-heading text-2xl">{category}</h3>
-                  <p className="mt-1 max-w-[30ch] text-sm text-mist/70">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                    <h3 className="font-heading text-3xl lg:text-4xl">{category}</h3>
+                    <span className="rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-navy">
+                      {kindsLabel(count)}
+                    </span>
+                  </div>
+                  <p className="mt-2 max-w-[34ch] text-sm text-white/80">
                     {categoryDescriptions[category]}
                   </p>
                 </div>

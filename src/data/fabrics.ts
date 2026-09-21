@@ -7,6 +7,12 @@ import { fabricColors } from "@/data/fabric-colors";
  * Реальных цен в товарной матрице не было - значения временные (placeholder),
  * подлежат замене на актуальные при получении прайса от менеджера.
  */
+/**
+ * Заглушка лежит в public/images, а не в public/images/fabrics: та папка
+ * целиком генерируется скриптом из исходной съёмки и пересобирается с нуля.
+ * Когда заглушка жила там, она удалилась при пересборке - и у тканей
+ * без фото на сайте пропала картинка.
+ */
 const baseFabrics: Fabric[] = [
   {
     slug: "barhat-glamour",
@@ -27,7 +33,7 @@ const baseFabrics: Fabric[] = [
       "Крупная драпировка без швов",
       "Плотность 290 г/м² для портьер",
     ],
-    image: "/images/fabrics/placeholder.jpg",
+    image: "/images/placeholder.jpg",
   },
   {
     slug: "satin",
@@ -48,7 +54,7 @@ const baseFabrics: Fabric[] = [
       "Умеренный вес для многослойных штор",
       "Широкое полотно 300 см",
     ],
-    image: "/images/fabrics/placeholder.jpg",
+    image: "/images/placeholder.jpg",
   },
   {
     slug: "kanvas",
@@ -69,7 +75,7 @@ const baseFabrics: Fabric[] = [
       "Собственный вес и стабильная форма",
       "47 оттенков на выбор",
     ],
-    image: "/images/fabrics/placeholder.jpg",
+    image: "/images/placeholder.jpg",
   },
   {
     slug: "dvuhstoronniy-blekaut",
@@ -90,7 +96,7 @@ const baseFabrics: Fabric[] = [
       "Одинаковая отделка с обеих сторон",
       "Ширина 320 см для окон",
     ],
-    image: "/images/fabrics/placeholder.jpg",
+    image: "/images/placeholder.jpg",
   },
   {
     slug: "podkladochnaya-tkan",
@@ -111,7 +117,7 @@ const baseFabrics: Fabric[] = [
       "Защита лицевой ткани от света",
       "Базовые нейтральные оттенки",
     ],
-    image: "/images/fabrics/placeholder.jpg",
+    image: "/images/placeholder.jpg",
   },
   {
     slug: "satin-ali",
@@ -132,7 +138,7 @@ const baseFabrics: Fabric[] = [
       "Точный подбор полутонов",
       "Мягкая текучая драпировка",
     ],
-    image: "/images/fabrics/placeholder.jpg",
+    image: "/images/placeholder.jpg",
   },
   {
     slug: "dimaut-midnight",
@@ -153,7 +159,7 @@ const baseFabrics: Fabric[] = [
       "Цельное полотно 320 см",
       "25 сдержанных оттенков",
     ],
-    image: "/images/fabrics/placeholder.jpg",
+    image: "/images/placeholder.jpg",
   },
   {
     slug: "kanvas-ali",
@@ -181,7 +187,7 @@ const baseFabrics: Fabric[] = [
       "Плотная выраженная фактура",
       "Стабильная форма без утяжеления",
     ],
-    image: "/images/fabrics/placeholder.jpg",
+    image: "/images/placeholder.jpg",
   },
 ];
 
@@ -190,6 +196,17 @@ const baseFabrics: Fabric[] = [
  * презентационная фотография, если она есть. Ткани без съёмки остаются
  * с заглушкой - галерея оттенков у них просто не показывается.
  */
+/**
+ * Какой оттенок снят на презентационном фото - по исходной съёмке
+ * (scripts/convert-photos.js, раздел HERO).
+ */
+const coverCodes: Record<string, string> = {
+  kanvas: "114",
+  "kanvas-ali": "44",
+  satin: "389",
+  "satin-ali": "119",
+};
+
 export const fabrics: Fabric[] = baseFabrics.map((fabric) => {
   const colors = fabricColors[fabric.slug];
   if (!colors?.length) return fabric;
@@ -197,6 +214,7 @@ export const fabrics: Fabric[] = baseFabrics.map((fabric) => {
     ...fabric,
     image: `/images/fabrics/${fabric.slug}/cover.webp`,
     colors,
+    coverCode: coverCodes[fabric.slug],
   };
 });
 

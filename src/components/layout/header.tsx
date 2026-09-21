@@ -14,7 +14,7 @@ export function Header() {
             width={267}
             height={400}
             className="h-7 w-auto"
-            priority
+            loading="eager"
           />
           <span className="font-heading text-base font-semibold tracking-wide">
             KNK TEX

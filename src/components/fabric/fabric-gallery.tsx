@@ -6,7 +6,7 @@ import type { Fabric } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type View = {
-  /** null - общий вид ткани, иначе номер оттенка из палитры поставщика. */
+  /** Номер оттенка; null - раскладка или ткань без отснятой палитры. */
   code: string | null;
   image: string;
   thumb: string;
@@ -14,24 +14,65 @@ type View = {
 };
 
 export function FabricGallery({ fabric }: { fabric: Fabric }) {
-  const views: View[] = [
-    { code: null, image: fabric.image, thumb: fabric.image, label: "Общий вид" },
-    ...(fabric.colors ?? []).map((color) => ({
-      code: color.code,
-      image: color.image,
-      thumb: color.thumb,
-      label: color.name ? `${color.code} - ${color.name}` : `Оттенок ${color.code}`,
-    })),
-  ];
+  const colors = fabric.colors ?? [];
+  const hasPalette = colors.length > 0;
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  // В палитре только пронумерованные оттенки. Безымянный «общий вид»
+  // убран: покупатели принимали его за отдельный цвет без номера.
+  // Раскладка (набор образцов) встаёт первой, когда появится её фото.
+  const views: View[] = hasPalette
+    ? [
+        ...(fabric.swatchImage
+          ? [
+              {
+                code: null,
+                image: fabric.swatchImage,
+                thumb: fabric.swatchImage,
+                label: "Раскладка",
+              },
+            ]
+          : []),
+        ...colors.map((color) => ({
+          code: color.code,
+          image: color.image,
+          thumb: color.thumb,
+          label: color.name
+            ? `${color.code} - ${color.name}`
+            : `Оттенок ${color.code}`,
+        })),
+      ]
+    : [{ code: null, image: fabric.image, thumb: fabric.image, label: fabric.name }];
+
+  // Открываемся на оттенке с презентационного фото: первый кадр остаётся
+  // самым выигрышным, но уже с настоящим номером.
+  const coverIndex = fabric.coverCode
+    ? views.findIndex((view) => view.code === fabric.coverCode)
+    : -1;
+  const [activeIndex, setActiveIndex] = useState(Math.max(0, coverIndex));
   const active = views[activeIndex] ?? views[0];
-  const hasPalette = views.length > 1;
 
   return (
     <div>
       <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted lg:aspect-[3/4]">
+        {/* Миниатюра нового оттенка уже загружена сеткой палитры - она
+            появляется сразу по клику, пока догружается полный кадр. Без
+            неё браузер держал старое фото до загрузки нового, и клик
+            выглядел так, будто ничего не произошло. */}
+        {hasPalette && (
+          <Image
+            src={active.thumb}
+            alt=""
+            aria-hidden
+            fill
+            unoptimized
+            sizes="45vw"
+            className="scale-105 object-cover blur-[2px]"
+          />
+        )}
         <Image
+          // Ключ пересоздаёт картинку при смене оттенка: новый кадр
+          // стартует прозрачным, и под ним видна миниатюра.
+          key={active.image}
           src={active.image}
           alt={
             active.code
@@ -39,7 +80,8 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
               : `${fabric.name} - портьерная ткань, ${fabric.category.toLowerCase()}`
           }
           fill
-          priority
+          loading="eager"
+          fetchPriority="high"
           quality={88}
           sizes="(min-width: 1024px) 45vw, 90vw"
           className="object-cover"
@@ -55,13 +97,13 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
       {hasPalette && (
         <div className="mt-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Палитра - {fabric.colors?.length} из {fabric.colorsCount} оттенков
+            Палитра - {colors.length} из {fabric.colorsCount} оттенков
           </p>
 
           <div className="mt-3 grid max-h-72 grid-cols-5 gap-2 overflow-y-auto pr-1 sm:grid-cols-6 lg:grid-cols-7">
             {views.map((view, index) => (
               <button
-                key={`${view.code ?? "cover"}-${index}`}
+                key={`${view.code ?? view.label}-${index}`}
                 type="button"
                 onClick={() => setActiveIndex(index)}
                 aria-pressed={index === activeIndex}
@@ -79,14 +121,12 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
                   alt=""
                   fill
                   sizes="80px"
-                  unoptimized={view.thumb !== fabric.image}
+                  unoptimized
                   className="object-cover"
                 />
-                {view.code && (
-                  <span className="absolute inset-x-0 bottom-0 bg-navy/75 py-0.5 text-center text-[10px] font-medium leading-tight text-white">
-                    {view.code}
-                  </span>
-                )}
+                <span className="absolute inset-x-0 bottom-0 bg-navy/75 py-0.5 text-center text-[10px] font-medium leading-tight text-white">
+                  {view.code ?? view.label}
+                </span>
               </button>
             ))}
           </div>

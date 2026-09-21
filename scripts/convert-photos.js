@@ -50,8 +50,11 @@ const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SA
       // даёт заметно больше детали при том же качестве.
       await sharp(src).rotate().resize({ width: 1200, withoutEnlargement: true })
         .webp({ quality: 86, effort: 6 }).toFile(path.join(OUT, slug, id + '.webp'));
-      await sharp(src).rotate().resize({ width: 320, withoutEnlargement: true })
-        .webp({ quality: 82, effort: 6 }).toFile(path.join(OUT, slug, 'thumb', id + '.webp'));
+      // Миниатюра в сетке палитры показывается размером ~80px, поэтому
+      // 176px хватает с запасом на retina. Раньше было 320px - сетка
+      // канваса Rosabella весила 2,1 МБ и тормозила карточку.
+      await sharp(src).rotate().resize({ width: 176, withoutEnlargement: true })
+        .webp({ quality: 80, effort: 6 }).toFile(path.join(OUT, slug, 'thumb', id + '.webp'));
 
       manifest[slug].push({ code: code === 'без номера' ? 'б/н' : code, id });
     }
