@@ -64,7 +64,7 @@ export default async function CatalogPage({
         </span>
         <h1 className="mt-3 font-heading text-4xl">Каталог тканей</h1>
         <p className="mt-3 text-muted-foreground">
-          {fabrics.length} видов портьерных тканей. Минимальный заказ -{" "}
+          {fabrics.length} видов портьерных тканей. Минимальный заказ —{" "}
           {company.minOrderLabel} по каждой позиции.
         </p>
       </div>

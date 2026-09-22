@@ -172,7 +172,7 @@ export default async function CityPage({
 
         <p className="mt-6 text-sm text-muted-foreground">
           Полное расписание всех {carriersCount}{" "}
-          транспортных компаний -{" "}
+          транспортных компаний —{" "}
           <Link href="/delivery" className="underline underline-offset-4 hover:text-foreground">
             на странице доставки
           </Link>
