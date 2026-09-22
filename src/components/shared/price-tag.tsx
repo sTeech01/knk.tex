@@ -24,7 +24,7 @@ export function PriceTag({
     <div className={cn("flex flex-col", className)}>
       <span
         className={cn(
-          "font-heading font-semibold text-foreground",
+          "font-heading font-medium text-foreground",
           size === "sm" && "text-lg",
           size === "md" && "text-2xl",
           size === "lg" && "text-3xl"

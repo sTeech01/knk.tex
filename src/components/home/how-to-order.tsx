@@ -48,7 +48,7 @@ export function HowToOrder() {
             <li key={step.title}>
               <Reveal delay={index * 0.06} className="h-full">
                 <div className="flex h-full flex-col rounded-lg border border-border bg-background p-6">
-                  <span className="font-heading text-4xl text-accent">
+                  <span className="font-heading text-4xl font-light text-accent">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3 className="mt-4 font-heading text-lg">{step.title}</h3>
@@ -61,7 +61,7 @@ export function HowToOrder() {
 
         <Reveal>
           <div className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-            <ConsultationButton className="h-12 bg-navy px-8 text-base font-semibold text-white hover:bg-navy/90">
+            <ConsultationButton className="h-12 bg-navy px-8 text-base font-medium text-white hover:bg-navy/90">
               Оставить заявку
             </ConsultationButton>
             <p className="text-sm text-muted-foreground">

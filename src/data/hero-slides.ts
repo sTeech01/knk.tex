@@ -6,18 +6,18 @@
 export const heroSlides = [
   {
     image: "/images/hero/kanvas.webp",
-    alt: "Портьерный канвас Camilla - фактурное полотно для штор",
+    alt: "Портьерный канвас Camilla —фактурное полотно для штор",
   },
   {
     image: "/images/hero/kanvas-ali.webp",
-    alt: "Портьерный канвас Rosabella - плотная ткань для штор",
+    alt: "Портьерный канвас Rosabella —плотная ткань для штор",
   },
   {
     image: "/images/hero/satin.webp",
-    alt: "Портьерный сатин Camilla - гладкое полотно с мягким блеском",
+    alt: "Портьерный сатин Camilla —гладкое полотно с мягким блеском",
   },
   {
     image: "/images/hero/satin-ali.webp",
-    alt: "Портьерный сатин Rosabella - ткань для штор с мягкой драпировкой",
+    alt: "Портьерный сатин Rosabella —ткань для штор с мягкой драпировкой",
   },
 ] as const;

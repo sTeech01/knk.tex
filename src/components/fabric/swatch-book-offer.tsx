@@ -29,7 +29,7 @@ export function SwatchBookOffer({
             </p>
           </div>
         </div>
-        <p className="shrink-0 font-heading text-xl font-semibold">
+        <p className="shrink-0 font-heading text-xl font-medium">
           {formatRub(company.swatchBookPriceRub)}
           <span className="text-accent">*</span>
         </p>

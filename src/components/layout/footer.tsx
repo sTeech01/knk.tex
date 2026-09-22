@@ -20,7 +20,7 @@ export function Footer() {
               height={400}
               className="h-8 w-auto"
             />
-            <span className="font-heading text-lg font-semibold">
+            <span className="font-heading text-lg font-medium">
               KNK TEX
             </span>
           </Link>

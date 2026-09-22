@@ -126,7 +126,7 @@ export default async function CategoryPage({
         </div>
         <ConsultationButton
           subject={page.category}
-          className="h-11 shrink-0 bg-navy px-8 text-sm font-semibold text-white hover:bg-navy/90"
+          className="h-11 shrink-0 bg-navy px-8 text-sm font-medium text-white hover:bg-navy/90"
         >
           Получить консультацию
         </ConsultationButton>

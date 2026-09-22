@@ -65,7 +65,9 @@ export function HeroSlider({ children }: { children: React.ReactNode }) {
 
   return (
     <section
-      className="relative flex touch-pan-y items-center justify-center overflow-hidden bg-navy"
+      // На десктопе первый экран занимает ровно окно под шапкой (3.75rem):
+      // фото на весь экран, текст по центру, следующий блок — сразу ниже.
+      className="relative flex touch-pan-y items-center justify-center overflow-hidden bg-navy lg:min-h-[calc(100svh-3.75rem)]"
       onPointerDown={(event) => {
         pointer.current = { x: event.clientX, y: event.clientY };
       }}

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "KNK TEX - портьерные ткани оптом",
+    name: "KNK TEX — портьерные ткани оптом",
     short_name: "KNK TEX",
     description: "Каталог портьерных тканей KNK TEX для оптовых заказчиков.",
     start_url: "/",

@@ -190,7 +190,7 @@ export default async function CityPage({
         </div>
         <ConsultationButton
           subject={`Поставка: ${page.name}`}
-          className="h-11 shrink-0 bg-navy px-8 text-sm font-semibold text-white hover:bg-navy/90"
+          className="h-11 shrink-0 bg-navy px-8 text-sm font-medium text-white hover:bg-navy/90"
         >
           Получить консультацию
         </ConsultationButton>

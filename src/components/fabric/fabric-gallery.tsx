@@ -66,7 +66,7 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
         />
 
         {badgeCode && (
-          <span className="absolute left-3 top-3 rounded-md bg-navy/85 px-2.5 py-1 text-xs font-semibold text-white">
+          <span className="absolute left-3 top-3 rounded-md bg-navy/85 px-2.5 py-1 text-xs font-medium text-white">
             Оттенок {badgeCode}
           </span>
         )}

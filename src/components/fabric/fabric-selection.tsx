@@ -49,7 +49,7 @@ export function FabricOrderButton({
     <div>
       <ConsultationButton
         subject={subject}
-        className="h-12 w-full bg-navy text-base font-semibold text-white hover:bg-navy/90 sm:w-auto sm:px-10"
+        className="h-12 w-full bg-navy text-base font-medium text-white hover:bg-navy/90 sm:w-auto sm:px-10"
       >
         Оставить заявку
       </ConsultationButton>
