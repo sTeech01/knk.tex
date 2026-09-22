@@ -8,7 +8,7 @@ export type CatalogFilters = {
   categories: FabricCategory[];
   colorFamilies: ColorFamily[];
   widths: number[];
-  /** Границы цены - в рублях: покупатель видит только рублёвые цены. */
+  /** Границы цены — в рублях: покупатель видит только рублёвые цены. */
   priceMin?: number;
   priceMax?: number;
   sort: CatalogSort;

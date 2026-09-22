@@ -8,7 +8,7 @@ import { breadcrumbJsonLd } from "@/lib/schema";
 export const metadata: Metadata = {
   title: "Контакты",
   description:
-    "Контакты KNK TEX: телефон, Telegram, WhatsApp, email и режим работы. Оставьте заявку - менеджер свяжется с вами по вопросам оптовых поставок портьерных тканей.",
+    "Контакты KNK TEX: телефон, Telegram, WhatsApp, email и режим работы. Оставьте заявку — менеджер свяжется с вами по вопросам оптовых поставок портьерных тканей.",
   alternates: { canonical: "/contacts" },
 };
 
@@ -31,7 +31,7 @@ export default function ContactsPage() {
         </span>
         <h1 className="mt-3 font-heading text-4xl">Контакты</h1>
         <p className="mt-3 text-muted-foreground">
-          Свяжитесь с нами удобным способом или оставьте заявку - менеджер
+          Свяжитесь с нами удобным способом или оставьте заявку — менеджер
           перезвонит и подберёт условия поставки.
         </p>
       </div>

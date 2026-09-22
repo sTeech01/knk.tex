@@ -41,10 +41,10 @@ export function productJsonLd(fabric: Fabric, rateUsdToRub: number) {
     category: fabric.category,
     image: `${SITE_URL}${fabric.image}`,
     // availability намеренно не указывается: по ТЗ сайт не показывает остатки
-    // ни в интерфейсе, ни в разметке - иначе поисковики выводят «В наличии».
+    // ни в интерфейсе, ни в разметке — иначе поисковики выводят «В наличии».
     offers: {
       "@type": "Offer",
-      // Цена в разметке совпадает с показанной покупателю - в рублях
+      // Цена в разметке совпадает с показанной покупателю — в рублях
       // по курсу ЦБ. Расхождение с видимой ценой поисковики считают ошибкой.
       priceCurrency: "RUB",
       price: convertUsdToRub(fabric.priceUsd, rateUsdToRub).toFixed(0),

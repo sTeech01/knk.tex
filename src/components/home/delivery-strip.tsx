@@ -21,7 +21,7 @@ export function DeliveryStrip() {
             </span>
             <div>
               <h2 className="font-heading text-2xl sm:text-3xl">
-                Доставка по Москве - бесплатно
+                Доставка по Москве — бесплатно
               </h2>
               <p className="mt-2 max-w-xl text-white/75">
                 По России отгружаем {carriersCount}{" "}
@@ -30,7 +30,7 @@ export function DeliveryStrip() {
                   "транспортными компаниями",
                   "транспортными компаниями",
                 ])}{" "}
-                - Деловые Линии, ПЭК, СДЭК и другими - с понедельника по субботу.
+                - Деловые Линии, ПЭК, СДЭК и другими — с понедельника по субботу.
               </p>
               <p className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/60">
                 <span>Поставки:</span>

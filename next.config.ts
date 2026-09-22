@@ -10,6 +10,17 @@ const nextConfig: NextConfig = {
      */
     qualities: [75, 88],
   },
+  experimental: {
+    /*
+     * Число воркеров сборки можно ограничить переменной NEXT_BUILD_CPUS.
+     * На машине разработчика при нехватке памяти 15 параллельных воркеров
+     * падали с нарушением доступа. На Vercel переменная не задана - там
+     * значение по умолчанию.
+     */
+    cpus: process.env.NEXT_BUILD_CPUS
+      ? Number(process.env.NEXT_BUILD_CPUS)
+      : undefined,
+  },
 };
 
 export default nextConfig;

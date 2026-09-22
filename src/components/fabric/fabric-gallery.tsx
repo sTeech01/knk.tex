@@ -12,11 +12,11 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
 
   // null - презентационное фото. Карточка открывается на нём: это
   // постановочный кадр, а не снимок оттенка, и именно его заказчик хочет
-  // видеть первым. В сетку палитры он не попадает - там только
+  // видеть первым. В сетку палитры он не попадает — там только
   // пронумерованные оттенки; при выборе цвета кадр меняется на оттенок.
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const activeColor = activeIndex === null ? null : colors[activeIndex];
-  // Выбранный номер уходит наружу - в кнопку заявки на этой же карточке.
+  // Выбранный номер уходит наружу — в кнопку заявки на этой же карточке.
   const { setCode } = useFabricSelection();
 
   function selectColor(index: number) {
@@ -24,7 +24,7 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
     setCode(colors[index]?.code ?? null);
   }
 
-  // Цвет презентационного фото известен - показываем его номер, чтобы
+  // Цвет презентационного фото известен — показываем его номер, чтобы
   // кадр не выглядел безымянным отдельным цветом.
   const badgeCode = activeColor ? activeColor.code : fabric.coverCode;
   const mainImage = activeColor ? activeColor.image : fabric.image;
@@ -32,7 +32,7 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
   return (
     <div>
       <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted lg:aspect-[3/4]">
-        {/* Миниатюра выбранного оттенка уже загружена сеткой палитры - она
+        {/* Миниатюра выбранного оттенка уже загружена сеткой палитры — она
             появляется сразу по клику, пока догружается полный кадр. Без
             неё браузер держал старое фото до загрузки нового, и клик
             выглядел так, будто ничего не произошло. */}
@@ -54,8 +54,8 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
           src={mainImage}
           alt={
             badgeCode
-              ? `${fabric.name}, оттенок ${badgeCode} - портьерная ткань, ${fabric.category.toLowerCase()}`
-              : `${fabric.name} - портьерная ткань, ${fabric.category.toLowerCase()}`
+              ? `${fabric.name}, оттенок ${badgeCode} — портьерная ткань, ${fabric.category.toLowerCase()}`
+              : `${fabric.name} — портьерная ткань, ${fabric.category.toLowerCase()}`
           }
           fill
           loading="eager"
@@ -75,13 +75,13 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
       {hasPalette && (
         <div className="mt-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Палитра - {colors.length} из {fabric.colorsCount} оттенков
+            Палитра — {colors.length} из {fabric.colorsCount} оттенков
           </p>
 
           <div className="mt-3 grid max-h-72 grid-cols-5 gap-2 overflow-y-auto pr-1 sm:grid-cols-6 lg:grid-cols-7">
             {colors.map((color, index) => {
               const label = color.name
-                ? `${color.code} - ${color.name}`
+                ? `${color.code} — ${color.name}`
                 : `Оттенок ${color.code}`;
               return (
                 <button
@@ -116,14 +116,14 @@ export function FabricGallery({ fabric }: { fabric: Fabric }) {
         </div>
       )}
 
-      {/* Обязательная оговорка о цветопередаче - требование заказчика:
+      {/* Обязательная оговорка о цветопередаче — требование заказчика:
           у ткани десятки оттенков, и экран покупателя передаёт их неточно. */}
       <p className="mt-4 flex gap-1.5 text-xs leading-relaxed text-muted-foreground">
         <span aria-hidden className="text-accent">
           *
         </span>
         <span>
-          Оттенок на фотографии может отличаться от фактического цвета ткани -
+          Оттенок на фотографии может отличаться от фактического цвета ткани —
           цветопередача зависит от настроек вашего экрана.{" "}
           {hasPalette
             ? "Перед заказом уточняйте оттенок по номеру у менеджера."

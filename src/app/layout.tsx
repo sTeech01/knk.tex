@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Playfair_Display } from "next/font/google";
+import { Onest } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -11,22 +11,23 @@ import { SITE_URL } from "@/lib/site";
 import { siteKeywords } from "@/lib/seo";
 import { homeCopy } from "@/data/copy";
 
-const fontSans = Manrope({
+/**
+ * Один гротеск на весь сайт - Onest: он изначально рисовался под
+ * кириллицу, поэтому русский текст выглядит ровно, а не как латиница с
+ * дорисованными буквами. Заголовки отличаются от текста жирностью, а не
+ * сменой шрифта. Прежняя пара Manrope + Playfair Display читалась вычурно
+ * из-за контрастной антиквы в заголовках — заказчику не понравилась.
+ */
+const fontSans = Onest({
   variable: "--font-sans",
   subsets: ["latin", "cyrillic"],
-});
-
-const fontHeading = Playfair_Display({
-  variable: "--font-heading",
-  subsets: ["latin", "cyrillic"],
-  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: homeCopy.metaTitleHome,
-    template: "%s - KNK TEX",
+    template: "%s — KNK TEX",
   },
   description: homeCopy.metaDescriptionHome,
   keywords: [...siteKeywords],
@@ -62,7 +63,7 @@ export default function RootLayout({
   return (
     <html
       lang="ru"
-      className={`${fontSans.variable} ${fontHeading.variable} h-full antialiased`}
+      className={`${fontSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col pb-16 md:pb-0">
         <noscript>

@@ -13,7 +13,7 @@ export function SearchBar() {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Отражаем внешние изменения URL (например, сброс фильтров), не перезаписывая
-  // то, что пользователь только что ввёл сам - паттерн "adjusting state during render".
+  // то, что пользователь только что ввёл сам — паттерн "adjusting state during render".
   if (urlQuery !== syncedQuery) {
     setSyncedQuery(urlQuery);
     setValue(urlQuery);

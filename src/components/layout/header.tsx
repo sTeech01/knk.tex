@@ -36,7 +36,7 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-5 md:flex">
-          {/* Оптовик часто просто звонит - номер не должен прятаться в подвале. */}
+          {/* Оптовик часто просто звонит — номер не должен прятаться в подвале. */}
           <a
             href={company.phoneHref}
             className="hidden items-center gap-2 text-sm font-semibold whitespace-nowrap transition-colors hover:text-accent lg:flex"

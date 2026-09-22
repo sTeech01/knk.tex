@@ -10,7 +10,7 @@ import { company } from "@/data/company";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-/** Текст заявки для мессенджера - менеджер видит всё без переспрашивания. */
+/** Текст заявки для мессенджера — менеджер видит всё без переспрашивания. */
 function whatsappLink(name: string, phone: string, comment: string): string {
   const text = [
     "Здравствуйте! Заявка с сайта KNK TEX.",
@@ -64,7 +64,7 @@ export function ConsultationForm({
         <CheckCircle2 className="size-10 text-accent" />
         <p className="font-heading text-lg">Заявка отправлена</p>
         <p className="max-w-xs text-sm text-muted-foreground">
-          Менеджер свяжется с вами в рабочее время. Удобнее в мессенджере -
+          Менеджер свяжется с вами в рабочее время. Удобнее в мессенджере —
           продублируйте заявку, ответим там.
         </p>
         {/* Экран не закрывается сам: раньше окно пропадало через 1,8 с,

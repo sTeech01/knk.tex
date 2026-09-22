@@ -16,7 +16,7 @@ export function FabricCardCompact({
       <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
         <Image
           src={fabric.image}
-          alt={`${fabric.name} - портьерная ткань, ${fabric.category.toLowerCase()}`}
+          alt={`${fabric.name} — портьерная ткань, ${fabric.category.toLowerCase()}`}
           fill
           sizes="(min-width: 1024px) 16vw, 45vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"

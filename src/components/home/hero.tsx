@@ -9,7 +9,7 @@ import { plural } from "@/lib/plural";
 const maxWidthCm = Math.max(...fabrics.map((fabric) => fabric.widthCm));
 
 /**
- * Цифры первого экрана - только проверяемые факты из данных каталога.
+ * Цифры первого экрана — только проверяемые факты из данных каталога.
  * Раньше здесь стояло «8 тканей в каталоге»: для оптовика это звучит
  * бедно, хотя за восемью тканями стоит больше двухсот оттенков.
  */
@@ -33,7 +33,9 @@ export function Hero() {
           <span className="hidden h-px w-8 bg-gold/40 sm:block" />
         </div>
 
-        <h1 className="mt-5 max-w-3xl font-heading text-4xl leading-[1.12] text-white sm:text-5xl lg:text-6xl">
+        {/* Крупный заголовок — на ступень легче остальных: в 600 при 60px
+            гротеск выглядел грузно, в 500 — собранно и спокойно. */}
+        <h1 className="mt-5 max-w-3xl font-heading text-4xl font-medium leading-[1.1] text-white sm:text-5xl lg:text-6xl">
           {homeCopy.heroHeadline}
         </h1>
 
@@ -41,7 +43,7 @@ export function Hero() {
           {homeCopy.heroSubheadline}
         </p>
 
-        {/* Главное действие - заявка; каталог - второе. Раньше единственной
+        {/* Главное действие — заявка; каталог — второе. Раньше единственной
             кнопкой был каталог, и та в контурном, второстепенном стиле. */}
         <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row">
           <ConsultationButton className="h-12 w-full bg-gold px-8 text-base font-semibold text-gold-foreground hover:bg-gold/90 sm:w-auto">

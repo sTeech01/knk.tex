@@ -20,7 +20,7 @@ import {
 } from "@/data/fabrics";
 import { formatRub } from "@/lib/format";
 
-/** Шаг ползунка и округление границ - по 50 ₽, чтобы не было «1 237 ₽». */
+/** Шаг ползунка и округление границ — по 50 ₽, чтобы не было «1 237 ₽». */
 const PRICE_STEP_RUB = 50;
 
 function CheckboxGroup({

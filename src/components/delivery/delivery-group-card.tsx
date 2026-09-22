@@ -12,7 +12,7 @@ const shortDay: Record<WeekDay, string> = {
   Суббота: "субботам",
 };
 
-/** «по понедельникам, средам и пятницам» - вместо сухого перечня дат. */
+/** «по понедельникам, средам и пятницам» — вместо сухого перечня дат. */
 function daysSentence(days: WeekDay[]): string {
   const words = days.map((day) => shortDay[day]);
   if (words.length === 1) return `по ${words[0]}`;

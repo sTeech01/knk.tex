@@ -55,13 +55,13 @@ export function ConsultationProvider({
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            {/* С карточки ткани человек пришёл с конкретным товаром - это
+            {/* С карточки ткани человек пришёл с конкретным товаром — это
                 заявка, а не просьба о консультации. */}
             <DialogTitle className="font-heading text-2xl">
               {subject ? "Оставить заявку" : "Получить консультацию"}
             </DialogTitle>
             <DialogDescription>
-              Оставьте контакты - менеджер свяжется с вами в течение рабочего
+              Оставьте контакты — менеджер свяжется с вами в течение рабочего
               дня.
             </DialogDescription>
           </DialogHeader>

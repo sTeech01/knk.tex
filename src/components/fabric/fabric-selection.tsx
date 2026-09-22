@@ -5,7 +5,7 @@ import { ConsultationButton } from "@/components/shared/consultation-button";
 
 /**
  * Какой оттенок покупатель выбрал в палитре. Раньше этот выбор жил только
- * внутри галереи: покупатель находил нужный цвет, жал «заявку» - а менеджер
+ * внутри галереи: покупатель находил нужный цвет, жал «заявку» — а менеджер
  * получал лишь название ткани, без номера. Весь смысл нумерованной палитры
  * терялся на последнем шаге.
  */
@@ -30,7 +30,7 @@ export function FabricSelectionProvider({
   );
 }
 
-/** Вне карточки ткани галерея тоже работает - просто ничего не передаёт. */
+/** Вне карточки ткани галерея тоже работает — просто ничего не передаёт. */
 export function useFabricSelection(): Selection {
   return useContext(SelectionContext) ?? { code: null, setCode: () => {} };
 }
@@ -57,7 +57,7 @@ export function FabricOrderButton({
         <p className="mt-3 text-xs text-muted-foreground" aria-live="polite">
           {code
             ? `В заявке будет указан оттенок ${code}.`
-            : "Выберите оттенок в палитре - он попадёт в заявку."}
+            : "Выберите оттенок в палитре — он попадёт в заявку."}
         </p>
       )}
     </div>

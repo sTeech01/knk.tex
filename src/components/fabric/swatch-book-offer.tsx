@@ -4,7 +4,7 @@ import { company } from "@/data/company";
 import { ConsultationButton } from "@/components/shared/consultation-button";
 
 /**
- * Раскладка - набор образцов всей палитры ткани. Клиент покупает её,
+ * Раскладка — набор образцов всей палитры ткани. Клиент покупает её,
  * чтобы выбрать цвет вживую, а не по экрану; при следующем заказе
  * стоимость раскладки вычитается из суммы. Механика заказчика.
  */
@@ -25,7 +25,7 @@ export function SwatchBookOffer({
           <div>
             <p className="font-medium">Раскладка оттенков</p>
             <p className="mt-0.5 text-sm text-muted-foreground">
-              Все {colorsCount} цветов вживую - чтобы выбрать не по экрану.
+              Все {colorsCount} цветов вживую — чтобы выбрать не по экрану.
             </p>
           </div>
         </div>

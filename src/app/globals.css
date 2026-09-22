@@ -8,7 +8,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-heading: var(--font-heading);
+  /* Заголовки - тем же гротеском, что и текст; отличаются жирностью. */
+  --font-heading: var(--font-sans);
   --color-navy: var(--navy);
   --color-navy-soft: var(--navy-soft);
   --color-mist: var(--mist);
@@ -149,5 +150,14 @@
   h3,
   h4 {
     @apply font-heading tracking-tight;
+  }
+  /*
+   * Заголовочный стиль задаёт и жирность: гротеск в обычном начертании
+   * в крупных заголовках выглядит блёкло. Правило в слое base, поэтому
+   * явный класс веса (font-medium и т.п.) на элементе его перекрывает.
+   */
+  .font-heading {
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 }

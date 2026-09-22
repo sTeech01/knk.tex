@@ -18,7 +18,7 @@ const SWIPE_THRESHOLD_PX = 45;
  *
  * Все слайды смонтированы сразу и лежат стопкой, меняется только
  * прозрачность. Раньше при каждой смене старый кадр удалялся, а новый
- * загружался с нуля - отсюда была задержка, на которую жаловался
+ * загружался с нуля — отсюда была задержка, на которую жаловался
  * заказчик. Теперь картинки подгружаются заранее и переключение
  * мгновенное.
  *
@@ -28,7 +28,7 @@ const SWIPE_THRESHOLD_PX = 45;
 export function HeroSlider({ children }: { children: React.ReactNode }) {
   const count = heroSlides.length;
   const [index, setIndex] = useState(0);
-  // Меняется при ручном переключении - перезапускает таймер автолистания,
+  // Меняется при ручном переключении — перезапускает таймер автолистания,
   // чтобы слайд не сменился сам сразу после свайпа.
   const [resetKey, setResetKey] = useState(0);
   const pointer = useRef<{ x: number; y: number } | null>(null);
@@ -52,7 +52,7 @@ export function HeroSlider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (count < 2) return;
-    // Автолистание - движение без запроса пользователя, поэтому при
+    // Автолистание — движение без запроса пользователя, поэтому при
     // включённом «уменьшить движение» слайдер замирает.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -75,7 +75,7 @@ export function HeroSlider({ children }: { children: React.ReactNode }) {
         if (!start || count < 2) return;
         const dx = event.clientX - start.x;
         const dy = event.clientY - start.y;
-        // Горизонтальный жест - листаем; вертикальный остаётся прокруткой.
+        // Горизонтальный жест — листаем; вертикальный остаётся прокруткой.
         if (Math.abs(dx) < SWIPE_THRESHOLD_PX || Math.abs(dx) < Math.abs(dy)) return;
         goTo(dx < 0 ? index + 1 : index - 1);
       }}
@@ -114,7 +114,7 @@ export function HeroSlider({ children }: { children: React.ReactNode }) {
 
         {/* Затемнение намеренно нейтральное, без синего тона: цветной
             оверлей перекрашивал ткань, а первый экран должен показывать
-            её настоящий цвет. Только гашение яркости - ровно столько,
+            её настоящий цвет. Только гашение яркости — ровно столько,
             чтобы белый заголовок читался на светлых полотнах. */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0.3)_55%,rgba(0,0,0,0.48)_100%)]" />
         <div

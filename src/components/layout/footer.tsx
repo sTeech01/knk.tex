@@ -106,7 +106,7 @@ export function Footer() {
             Условия работы
           </h3>
           <div className="mt-4 flex flex-col gap-2.5 text-sm text-mist/80">
-            <p>Минимальный заказ - {company.minOrderLabel}</p>
+            <p>Минимальный заказ — {company.minOrderLabel}</p>
             <p>{company.freeDeliveryNote}</p>
             <p>
               {company.workingHours.split(", ").map((line) => (

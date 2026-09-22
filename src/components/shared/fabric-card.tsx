@@ -18,7 +18,7 @@ export function FabricCard({
       <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted">
         <Image
           src={fabric.image}
-          alt={`${fabric.name} - портьерная ткань, ${fabric.category.toLowerCase()}`}
+          alt={`${fabric.name} — портьерная ткань, ${fabric.category.toLowerCase()}`}
           fill
           loading={priority ? "eager" : undefined}
           fetchPriority={priority ? "high" : undefined}
@@ -26,7 +26,7 @@ export function FabricCard({
           sizes="(min-width: 1280px) 22vw, (min-width: 768px) 30vw, 90vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
         />
-        {/* Число оттенков - главное отличие одной ткани от другой для
+        {/* Число оттенков — главное отличие одной ткани от другой для
             закупщика, поэтому оно на фото, а не в мелкой строке внизу. */}
         <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-navy backdrop-blur-sm">
           {fabric.colorsCount}{" "}

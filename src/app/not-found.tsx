@@ -10,7 +10,7 @@ export default function NotFound() {
       <h1 className="mt-4 font-heading text-4xl">Страница не найдена</h1>
       <p className="mt-4 text-muted-foreground">
         Возможно, ткань была переименована или страница больше не существует.
-        Загляните в каталог - там собраны все доступные позиции.
+        Загляните в каталог — там собраны все доступные позиции.
       </p>
       <Link
         href="/catalog"

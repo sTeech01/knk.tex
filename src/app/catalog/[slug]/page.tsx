@@ -41,7 +41,7 @@ export async function generateMetadata({
   const fabric = getFabricBySlug(slug);
   if (!fabric) return {};
 
-  const title = `${fabric.name} - ${fabric.category.toLowerCase()} для штор оптом`;
+  const title = `${fabric.name} — ${fabric.category.toLowerCase()} для штор оптом`;
   const description = fabricDescription(fabric);
   return {
     title,
@@ -143,7 +143,7 @@ export default async function FabricPage({
                 hasPalette={(fabric.colors?.length ?? 0) > 0}
               />
               <p className="mt-1 text-xs text-muted-foreground">
-                Минимальный заказ - {company.minOrderLabel}.
+                Минимальный заказ — {company.minOrderLabel}.
               </p>
             </div>
 

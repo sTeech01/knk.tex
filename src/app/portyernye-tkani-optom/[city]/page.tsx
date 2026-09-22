@@ -53,7 +53,7 @@ export default async function CityPage({
 
   const rateUsdToRub = await getUsdToRubRate();
 
-  // Ткани выстраиваются в порядке спроса именно в этом городе - это и
+  // Ткани выстраиваются в порядке спроса именно в этом городе — это и
   // делает страницы разными по существу, а не подменой названия города.
   const ordered = page.focusCategories.flatMap((category) =>
     fabrics.filter((fabric) => fabric.category === category)
@@ -185,7 +185,7 @@ export default async function CityPage({
           <h2 className="font-heading text-xl">Заказ с поставкой в {page.nameTo}</h2>
           <p className="mt-1 max-w-xl text-sm text-muted-foreground">
             Менеджер подберёт оттенки по номерам и согласует доставку.
-            Минимальный заказ - {company.minOrderLabel}.
+            Минимальный заказ — {company.minOrderLabel}.
           </p>
         </div>
         <ConsultationButton

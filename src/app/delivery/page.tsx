@@ -11,7 +11,7 @@ import type { WeekDay } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Доставка",
-  description: `Расписание отгрузок портьерных тканей KNK TEX: ${carriersCount} транспортных компаний по всей России. Доставка по Москве - бесплатно.`,
+  description: `Расписание отгрузок портьерных тканей KNK TEX: ${carriersCount} транспортных компаний по всей России. Доставка по Москве — бесплатно.`,
   alternates: { canonical: "/delivery" },
 };
 
@@ -46,19 +46,19 @@ export default function DeliveryPage() {
         <p className="mt-3 text-muted-foreground">
           Отгружаем ткани {carriersCount} транспортными компаниями по всей
           России. Выберите день недели, чтобы увидеть, кто отгружает в этот
-          день. Минимальный заказ - {company.minOrderLabel}.
+          день. Минимальный заказ — {company.minOrderLabel}.
         </p>
       </div>
 
-      {/* Бесплатная доставка по Москве - заказчик просил вынести отдельно. */}
+      {/* Бесплатная доставка по Москве — заказчик просил вынести отдельно. */}
       <div className="mt-8 flex items-center gap-4 rounded-lg border border-gold/30 bg-gold-soft/40 px-5 py-4">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gold text-gold-foreground">
           <BadgeCheck className="size-5" />
         </span>
         <div>
-          <p className="font-heading text-lg">Доставка по Москве - бесплатно</p>
+          <p className="font-heading text-lg">Доставка по Москве — бесплатно</p>
           <p className="text-sm text-muted-foreground">
-            По России - отгрузка любой транспортной компанией из списка ниже.
+            По России — отгрузка любой транспортной компанией из списка ниже.
           </p>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function DeliveryPage() {
 
       <p className="mt-10 text-sm text-muted-foreground">
         Список транспортных компаний и дни отгрузки уточняются у менеджера при
-        оформлении заявки - расписание может обновляться.
+        оформлении заявки — расписание может обновляться.
       </p>
     </div>
   );
