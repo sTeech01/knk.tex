@@ -20,42 +20,55 @@ const categoryDescriptions: Record<FabricCategory, string> = {
 };
 
 /**
- * Порядок и размер плиток задаются вручную, а не по порядку в товарной
- * матрице. Наверху крупно сатин — по решению заказчика. Внизу крупно
- * бархат: заказчик считает его самым презентабельным. Подкладочная
- * ткань ушла в обычный квадрат — широкой полосой она смотрелась бедно.
- *
- * Раскладка на десктопе: 12 / 4+4+4 / 12.
+ * Порядок категорий задаётся вручную, а не берётся из товарной матрицы:
+ * наверху крупно сатин, внизу крупно бархат — решение заказчика.
+ * Категории, которых здесь нет, добавляются в конец, чтобы новая
+ * категория не пропала с главной молча.
  */
-const tileLayout: {
-  category: FabricCategory;
-  span: string;
-  height: string;
-}[] = [
-  {
-    category: "Сатин",
-    // На планшете верхняя плитка тоже во всю ширину — остальные четыре
-    // ложатся ровными парами, без одинокой плитки в конце.
-    span: "sm:col-span-2 lg:col-span-12",
-    height: "h-80 lg:h-[26rem]",
-  },
-  { category: "Блэкаут", span: "lg:col-span-4", height: "h-72 lg:h-80" },
-  { category: "Канвас", span: "lg:col-span-4", height: "h-72 lg:h-80" },
-  {
-    category: "Подкладочная ткань",
-    span: "lg:col-span-4",
-    height: "h-72 lg:h-80",
-  },
-  {
-    category: "Бархат",
-    // На планшете бархат в паре с подкладочной, а не во всю ширину:
-    // иначе подкладочная осталась бы одна с пустой половиной ряда.
-    span: "lg:col-span-12",
-    height: "h-72 lg:h-96",
-  },
+const categoryOrder: FabricCategory[] = [
+  "Сатин",
+  "Блэкаут",
+  "Канвас",
+  "Подкладочная ткань",
+  "Бархат",
 ];
 
-const defaultTile = { span: "lg:col-span-6", height: "h-72 lg:h-80" };
+/**
+ * Ширина плиток считается по факту, а не прописывается для каждой
+ * категории: ткани без съёмки с сайта скрыты, и число категорий меняется.
+ * Раньше раскладка была жёстко рассчитана на пять плиток, и когда
+ * подкладочная ушла, в среднем ряду осталось две плитки из трёх —
+ * треть ряда пустовала.
+ *
+ * Схема: первая плитка во всю ширину, последняя тоже, середина делится
+ * поровну. Для четырёх категорий выходит 12 / 6+6 / 12, для пяти —
+ * 12 / 4+4+4 / 12.
+ */
+function tileSpans(total: number): { span: string; height: string }[] {
+  const hero = { span: "sm:col-span-2 lg:col-span-12", height: "h-80 lg:h-[26rem]" };
+  if (total === 1) return [hero];
+  if (total === 2) {
+    return [hero, { span: "sm:col-span-2 lg:col-span-12", height: "h-72 lg:h-96" }];
+  }
+
+  const middleCount = total - 2;
+  // Классы записаны целиком: Tailwind ищет их в тексте файла и класс,
+  // собранный из кусков на лету, в сборку просто не попадёт.
+  const middleSpan =
+    middleCount % 3 === 0 ? "lg:col-span-4" : "lg:col-span-6";
+  const middle = Array.from({ length: middleCount }, () => ({
+    span: middleSpan,
+    height: "h-72 lg:h-80",
+  }));
+
+  // На планшете две колонки. Если средних плиток нечётное число,
+  // последняя встаёт в пару с одной из них, иначе идёт во всю ширину.
+  const last = {
+    span: middleCount % 2 === 0 ? "sm:col-span-2 lg:col-span-12" : "lg:col-span-12",
+    height: "h-72 lg:h-96",
+  };
+  return [hero, ...middle, last];
+}
 
 function kindsLabel(count: number): string {
   return `${count} ${plural(count, ["вид", "вида", "видов"])}`;
@@ -72,16 +85,20 @@ export function CategoryGrid() {
   }
 
   // Сначала категории в заданном порядке, затем всё, что появилось
-  // в данных, но ещё не попало в раскладку — чтобы новая категория
+  // в данных, но ещё не попало в список — чтобы новая категория
   // не пропала с главной молча.
-  const ordered = [
-    ...tileLayout
-      .filter((tile) => byCategory.has(tile.category))
-      .map((tile) => ({ ...tile, ...byCategory.get(tile.category)! })),
-    ...[...byCategory.entries()]
-      .filter(([category]) => !tileLayout.some((t) => t.category === category))
-      .map(([category, data]) => ({ category, ...defaultTile, ...data })),
+  const categories = [
+    ...categoryOrder.filter((category) => byCategory.has(category)),
+    ...[...byCategory.keys()].filter(
+      (category) => !categoryOrder.includes(category)
+    ),
   ];
+  const spans = tileSpans(categories.length);
+  const ordered = categories.map((category, index) => ({
+    category,
+    ...byCategory.get(category)!,
+    ...spans[index],
+  }));
 
   // Подпись считается по факту, а не пишется руками: раньше здесь стояло
   // «Пять категорий... восемь видов», и после скрытия тканей без съёмки
