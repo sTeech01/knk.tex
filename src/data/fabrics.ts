@@ -201,10 +201,10 @@ const baseFabrics: Fabric[] = [
  * (scripts/convert-photos.js, раздел HERO).
  */
 const coverCodes: Record<string, string> = {
-  kanvas: "114",
-  "kanvas-ali": "44",
-  satin: "389",
-  "satin-ali": "119",
+  // У канваса Camilla и сатина Camilla презентационные кадры пришли
+  // с именами с камеры — номер оттенка неизвестен, бейдж не показываем.
+  "kanvas-ali": "160",
+  "satin-ali": "144",
   "barhat-glamour": "23",
   // У двухстороннего блэкаута презентационный кадр пришёл с именем
   // с камеры, номер оттенка неизвестен - бейдж на фото не показываем.

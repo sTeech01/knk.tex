@@ -66,6 +66,9 @@ export default async function FabricPage({
   if (!fabric) notFound();
 
   const rateUsdToRub = await getUsdToRubRate();
+  // Единственная ткань в своей категории с тем же названием — показывать
+  // категорию отдельно незачем, получается повтор одного и того же.
+  const sameAsCategory = fabric.name === fabric.category;
 
   const breadcrumbData = breadcrumbJsonLd([
     { name: "Главная", path: "/" },
@@ -98,14 +101,20 @@ export default async function FabricPage({
               <Link href="/catalog">Каталог</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href={categoryHref(fabric.category)}>
-                {fabric.category}
-              </Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+          {/* У подкладочной ткани название совпадает с названием категории,
+              и в крошках выходило «Подкладочная ткань › Подкладочная ткань». */}
+          {!sameAsCategory && (
+            <>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href={categoryHref(fabric.category)}>
+                    {fabric.category}
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </>
+          )}
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>{fabric.name}</BreadcrumbPage>
@@ -119,9 +128,11 @@ export default async function FabricPage({
 
           <div className="flex flex-col gap-6">
             <div>
-              <Badge variant="secondary" className="mb-3">
-                {fabric.category}
-              </Badge>
+              {!sameAsCategory && (
+                <Badge variant="secondary" className="mb-3">
+                  {fabric.category}
+                </Badge>
+              )}
               <h1 className="font-heading text-3xl sm:text-4xl">{fabric.name}</h1>
               <p className="mt-3 text-muted-foreground">{fabric.description}</p>
             </div>
