@@ -7,6 +7,7 @@ import { MobileTabBar } from "@/components/layout/mobile-tab-bar";
 import { ConsultationProvider } from "@/components/shared/consultation-provider";
 import { MotionProvider } from "@/components/shared/motion-provider";
 import { organizationJsonLd } from "@/lib/schema";
+import { JsonLd } from "@/components/seo/json-ld";
 import { SITE_URL } from "@/lib/site";
 import { siteKeywords } from "@/lib/seo";
 import { homeCopy } from "@/data/copy";
@@ -69,10 +70,7 @@ export default function RootLayout({
         <noscript>
           <style>{`[style*="opacity:0"]{opacity:1 !important;transform:none !important;}`}</style>
         </noscript>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <JsonLd data={jsonLd} />
         <MotionProvider>
           <ConsultationProvider>
             <Header />

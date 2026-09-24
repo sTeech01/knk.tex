@@ -107,7 +107,15 @@ export function Footer() {
       <div className="border-t border-mist/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-xs text-mist/40 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} {company.name}. Все права защищены.</p>
-          <p>Сайт носит информационный характер и не является публичной офертой.</p>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-gold"
+            >
+              Политика обработки персональных данных
+            </Link>
+            <p>Сайт носит информационный характер и не является публичной офертой.</p>
+          </div>
         </div>
       </div>
     </footer>

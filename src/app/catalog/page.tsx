@@ -9,6 +9,7 @@ import { FiltersPanel } from "@/components/catalog/filters-panel";
 import { MobileFilters } from "@/components/catalog/mobile-filters";
 import { FabricGrid } from "@/components/catalog/fabric-grid";
 import { breadcrumbJsonLd } from "@/lib/schema";
+import { JsonLd } from "@/components/seo/json-ld";
 import type { FabricCategory, ColorFamily } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -53,10 +54,7 @@ export default async function CatalogPage({
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <div className="max-w-2xl">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">

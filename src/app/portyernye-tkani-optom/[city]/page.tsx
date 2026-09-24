@@ -14,6 +14,7 @@ import { cityPages, getCityPageBySlug, nationalCarriers } from "@/data/cities";
 import { carriersCount, deliverySchedule } from "@/data/delivery-schedule";
 import { categoryHref } from "@/data/categories";
 import { fabrics } from "@/data/fabrics";
+import { JsonLd } from "@/components/seo/json-ld";
 import { company } from "@/data/company";
 import { getUsdToRubRate } from "@/lib/currency";
 import { breadcrumbJsonLd } from "@/lib/schema";
@@ -79,10 +80,7 @@ export default async function CityPage({
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <Breadcrumb>
         <BreadcrumbList>

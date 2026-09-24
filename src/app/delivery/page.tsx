@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { carriersCount, deliverySchedule } from "@/data/delivery-schedule";
 import { DeliveryGroupCard } from "@/components/delivery/delivery-group-card";
 import { breadcrumbJsonLd } from "@/lib/schema";
+import { JsonLd } from "@/components/seo/json-ld";
 import { company } from "@/data/company";
 import type { WeekDay } from "@/lib/types";
 
@@ -31,10 +32,7 @@ export default function DeliveryPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <div className="max-w-2xl">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">

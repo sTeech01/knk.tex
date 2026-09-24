@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { CheckCircle2, Loader2, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { company } from "@/data/company";
 
-type Status = "idle" | "submitting" | "success" | "error";
+type Status = "idle" | "submitting" | "success" | "error" | "rate-limited";
 
 /** Текст заявки для мессенджера — менеджер видит всё без переспрашивания. */
 function whatsappLink(name: string, phone: string, comment: string): string {
@@ -48,6 +49,12 @@ export function ConsultationForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, phone, comment }),
       });
+      // Сервер ограничивает частоту заявок. Повторная отправка тут не
+      // поможет, поэтому и сообщение другое - со ссылкой на мессенджер.
+      if (response.status === 429) {
+        setStatus("rate-limited");
+        return;
+      }
       if (!response.ok) throw new Error("request_failed");
 
       setSent({ name, phone, comment });
@@ -111,6 +118,16 @@ export function ConsultationForm({
           />
         </div>
 
+        {status === "rate-limited" && (
+          <p className="text-sm text-destructive">
+            С этого адреса уже отправлено несколько заявок. Напишите нам в{" "}
+            <a href={company.telegram} className="underline">
+              Telegram
+            </a>{" "}
+            или позвоните — {company.phone}.
+          </p>
+        )}
+
         {status === "error" && (
           <p className="text-sm text-destructive">
             Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в{" "}
@@ -132,7 +149,14 @@ export function ConsultationForm({
           Отправить заявку
         </Button>
         <p className="text-xs text-muted-foreground">
-          Нажимая кнопку, вы соглашаетесь на обработку персональных данных.
+          Нажимая кнопку, вы соглашаетесь на{" "}
+          <Link
+            href="/privacy"
+            className="underline underline-offset-2 hover:text-foreground"
+          >
+            обработку персональных данных
+          </Link>
+          .
         </p>
       </div>
     </form>

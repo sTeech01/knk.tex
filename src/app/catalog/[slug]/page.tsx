@@ -13,6 +13,7 @@ import {
 import { fabrics, getFabricBySlug } from "@/data/fabrics";
 import { getUsdToRubRate } from "@/lib/currency";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/schema";
+import { JsonLd } from "@/components/seo/json-ld";
 import { FabricGallery } from "@/components/fabric/fabric-gallery";
 import { FabricSpecs } from "@/components/fabric/fabric-specs";
 import { MetersCalculator } from "@/components/fabric/meters-calculator";
@@ -79,14 +80,8 @@ export default async function FabricPage({
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productData) }}
-      />
+      <JsonLd data={breadcrumbData} />
+      <JsonLd data={productData} />
 
       <Breadcrumb>
         <BreadcrumbList>

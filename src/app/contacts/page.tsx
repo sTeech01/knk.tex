@@ -4,6 +4,7 @@ import { RequisitesRow } from "@/components/contacts/requisites-card";
 import { CoveragePanel } from "@/components/contacts/coverage-panel";
 import { ConsultationForm } from "@/components/shared/consultation-form";
 import { breadcrumbJsonLd } from "@/lib/schema";
+import { JsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
   title: "Контакты",
@@ -20,10 +21,7 @@ export default function ContactsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <div className="max-w-2xl">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">

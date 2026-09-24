@@ -14,6 +14,7 @@ import { fabrics } from "@/data/fabrics";
 import { company } from "@/data/company";
 import { getUsdToRubRate } from "@/lib/currency";
 import { breadcrumbJsonLd } from "@/lib/schema";
+import { JsonLd } from "@/components/seo/json-ld";
 import { FabricCard } from "@/components/shared/fabric-card";
 import { ConsultationButton } from "@/components/shared/consultation-button";
 
@@ -63,10 +64,7 @@ export default async function CategoryPage({
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <Breadcrumb>
         <BreadcrumbList>
