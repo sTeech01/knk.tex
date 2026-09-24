@@ -1,15 +1,13 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { photographedFabrics } from "@/data/fabrics";
+import { fabrics } from "@/data/fabrics";
 import { FabricCard } from "@/components/shared/fabric-card";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { homeCopy } from "@/data/copy";
 
 export function FeaturedFabrics({ rateUsdToRub }: { rateUsdToRub: number }) {
-  // Только ткани с настоящей съёмкой: витрина с заглушками выглядит
-  // недоделанной. Когда отснимут остальные, они появятся здесь сами.
-  const featured = photographedFabrics.slice(0, 4);
+  const featured = fabrics.slice(0, 4);
   if (featured.length === 0) return null;
 
   return (

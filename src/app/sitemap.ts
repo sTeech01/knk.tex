@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { fabrics } from "@/data/fabrics";
-import { categoryPages } from "@/data/categories";
+import { visibleCategoryPages } from "@/data/categories";
 import { cityPages } from "@/data/cities";
 import { SITE_URL } from "@/lib/site";
 
@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/contacts`, changeFrequency: "yearly", priority: 0.5 },
   ];
 
-  const categoryRoutes: MetadataRoute.Sitemap = categoryPages.map((page) => ({
+  const categoryRoutes: MetadataRoute.Sitemap = visibleCategoryPages.map((page) => ({
     url: `${SITE_URL}/catalog/kategoriya/${page.slug}`,
     changeFrequency: "weekly",
     priority: 0.8,

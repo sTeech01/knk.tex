@@ -9,7 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { categoryPages, getCategoryPageBySlug } from "@/data/categories";
+import { visibleCategoryPages, getCategoryPageBySlug } from "@/data/categories";
 import { fabrics } from "@/data/fabrics";
 import { company } from "@/data/company";
 import { getUsdToRubRate } from "@/lib/currency";
@@ -18,7 +18,7 @@ import { FabricCard } from "@/components/shared/fabric-card";
 import { ConsultationButton } from "@/components/shared/consultation-button";
 
 export function generateStaticParams() {
-  return categoryPages.map((page) => ({ slug: page.slug }));
+  return visibleCategoryPages.map((page) => ({ slug: page.slug }));
 }
 
 export async function generateMetadata({

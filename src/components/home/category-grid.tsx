@@ -83,13 +83,21 @@ export function CategoryGrid() {
       .map(([category, data]) => ({ category, ...defaultTile, ...data })),
   ];
 
+  // Подпись считается по факту, а не пишется руками: раньше здесь стояло
+  // «Пять категорий... восемь видов», и после скрытия тканей без съёмки
+  // цифры разошлись бы с тем, что видно на экране.
+  const subheading =
+    `${ordered.length} ${plural(ordered.length, ["категория", "категории", "категорий"])}: ` +
+    `${ordered.map((tile) => tile.category.toLowerCase()).join(", ")} — ` +
+    `${fabrics.length} ${plural(fabrics.length, ["вид", "вида", "видов"])} основы для штор.`;
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-28">
       <Reveal>
         <SectionHeading
           eyebrow="Каталог"
           title={homeCopy.categoriesHeading}
-          description={homeCopy.categoriesSubheading}
+          description={subheading}
         />
       </Reveal>
 

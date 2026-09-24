@@ -6,8 +6,6 @@ export const homeCopy = {
   heroPrimaryCta: "Оставить заявку",
   heroSecondaryCta: "Смотреть каталог",
   categoriesHeading: "Портьерные ткани оптом — от бархата до подкладки",
-  categoriesSubheading:
-    "Пять категорий: бархат, сатин, канвас, блэкаут с димаутом и подкладочные ткани — восемь видов основы для штор.",
   featuredHeading: "Ткани крупным планом",
   featuredSubheading:
     "Каждый оттенок снят отдельно.",

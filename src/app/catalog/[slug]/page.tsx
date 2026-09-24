@@ -146,16 +146,29 @@ export default async function FabricPage({
               ))}
             </ul>
 
-            <PriceTag priceUsd={fabric.priceUsd} rateUsdToRub={rateUsdToRub} size="lg" />
+            {/* Характеристики — сразу под описанием: ширина, плотность и
+                число оттенков закупщику нужны раньше цены, а не в самом
+                низу страницы под кнопкой и раскладкой. */}
+            <div className="rounded-lg border border-border p-6">
+              <FabricSpecs fabric={fabric} />
+            </div>
 
-            <div>
-              <FabricOrderButton
-                fabricName={fabric.name}
-                hasPalette={(fabric.colors?.length ?? 0) > 0}
+            {/* Цена и кнопка — одним блоком, а не тремя отдельными. */}
+            <div className="rounded-lg border border-border bg-muted/40 p-6">
+              <PriceTag
+                priceUsd={fabric.priceUsd}
+                rateUsdToRub={rateUsdToRub}
+                size="lg"
               />
-              <p className="mt-1 text-xs text-muted-foreground">
-                Минимальный заказ — {company.minOrderLabel}.
-              </p>
+              <div className="mt-4">
+                <FabricOrderButton
+                  fabricName={fabric.name}
+                  hasPalette={(fabric.colors?.length ?? 0) > 0}
+                />
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Минимальный заказ — {company.minOrderLabel}.
+                </p>
+              </div>
             </div>
 
             <SwatchBookOffer
@@ -163,9 +176,7 @@ export default async function FabricPage({
               colorsCount={fabric.colorsCount}
             />
 
-            <div className="flex flex-col gap-6 rounded-lg border border-border bg-muted/40 p-6">
-              <FabricSpecs fabric={fabric} />
-              <div className="border-t border-border" />
+            <div className="rounded-lg border border-border p-6">
               <MetersCalculator priceUsd={fabric.priceUsd} rateUsdToRub={rateUsdToRub} />
             </div>
           </div>

@@ -210,16 +210,23 @@ const coverCodes: Record<string, string> = {
   // с камеры, номер оттенка неизвестен - бейдж на фото не показываем.
 };
 
-export const fabrics: Fabric[] = baseFabrics.map((fabric) => {
-  const colors = fabricColors[fabric.slug];
-  if (!colors?.length) return fabric;
-  return {
+/**
+ * На сайте показываются только ткани с настоящей съёмкой.
+ *
+ * Пока фотографий нет, ткань выводилась с нарисованным рулоном-заглушкой
+ * и рядом с реальными снимками сразу бросалась в глаза - заказчик попросил
+ * такие убрать. Ткань вернётся на сайт сама, без правок кода, как только
+ * её фотографии появятся в палитре: считается, счётчики, карта сайта и
+ * страница ткани строятся из этого же списка.
+ */
+export const fabrics: Fabric[] = baseFabrics
+  .filter((fabric) => (fabricColors[fabric.slug]?.length ?? 0) > 0)
+  .map((fabric) => ({
     ...fabric,
     image: `/images/fabrics/${fabric.slug}/cover.webp`,
-    colors,
+    colors: fabricColors[fabric.slug],
     coverCode: coverCodes[fabric.slug],
-  };
-});
+  }));
 
 export function getFabricBySlug(slug: string): Fabric | undefined {
   return fabrics.find((fabric) => fabric.slug === slug);
@@ -237,14 +244,6 @@ export const fabricCategories = Array.from(
 export const totalShades = fabrics.reduce(
   (sum, fabric) => sum + fabric.colorsCount,
   0
-);
-
-/**
- * Ткани с настоящей съёмкой. Витрину на главной собираем только из них:
- * заглушка-рулон дважды подряд делала блок похожим на недоделанный.
- */
-export const photographedFabrics = fabrics.filter(
-  (fabric) => (fabric.colors?.length ?? 0) > 0
 );
 
 export const widthOptions = Array.from(

@@ -1,4 +1,5 @@
 import type { FabricCategory } from "@/lib/types";
+import { fabrics } from "@/data/fabrics";
 
 /**
  * Посадочные страницы категорий — основная точка входа из поиска по
@@ -139,14 +140,23 @@ export const categoryPages: CategoryPage[] = [
   },
 ];
 
+/**
+ * Категории, в которых есть хотя бы одна ткань с фотографиями. Ткани без
+ * съёмки на сайт не выводятся, и вместе с последней тканью из категории
+ * уходит и её посадочная страница - иначе она осталась бы пустой.
+ */
+export const visibleCategoryPages = categoryPages.filter((page) =>
+  fabrics.some((fabric) => fabric.category === page.category)
+);
+
 export function getCategoryPageBySlug(slug: string): CategoryPage | undefined {
-  return categoryPages.find((page) => page.slug === slug);
+  return visibleCategoryPages.find((page) => page.slug === slug);
 }
 
 export function getCategoryPageByCategory(
   category: FabricCategory
 ): CategoryPage | undefined {
-  return categoryPages.find((page) => page.category === category);
+  return visibleCategoryPages.find((page) => page.category === category);
 }
 
 /** Ссылка на посадочную категории, если она есть, иначе — фильтр каталога. */
