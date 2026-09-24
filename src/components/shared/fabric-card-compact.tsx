@@ -27,7 +27,7 @@ export function FabricCardCompact({
           {fabric.name}
         </p>
         <p className="mt-0.5 text-xs text-muted-foreground">
-          {formatRub(convertUsdToRub(fabric.priceUsd, rateUsdToRub))} / м
+          {formatRub(convertUsdToRub(fabric.priceUsd, rateUsdToRub))} / пог. м
         </p>
       </div>
     </Link>

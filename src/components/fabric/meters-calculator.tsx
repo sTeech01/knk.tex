@@ -35,7 +35,7 @@ export function MetersCalculator({
 
       <div className="mt-4 flex flex-wrap items-end gap-6">
         <div className="grid gap-1.5">
-          <Label htmlFor="meters">Количество метров</Label>
+          <Label htmlFor="meters">Количество погонных метров</Label>
           <Input
             id="meters"
             type="number"
@@ -57,7 +57,7 @@ export function MetersCalculator({
       {belowMinimum && (
         <p className="mt-4 text-xs text-muted-foreground">
           Минимальный заказ — {company.minOrderLabel} (в рулоне от{" "}
-          {company.metersPerRoll} метров). Итоговая стоимость уточняется у
+          {company.metersPerRoll} погонных метров). Итоговая стоимость уточняется у
           менеджера.
         </p>
       )}

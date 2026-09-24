@@ -31,8 +31,9 @@ export function PriceTag({
         )}
       >
         {formatRub(rub)}
+        {/* Цена за погонный метр, а не за квадратный — уточнение заказчика. */}
         <span className="text-muted-foreground font-sans text-[0.55em] font-normal">
-          {" "}/ м
+          {" "}/ пог. м
         </span>
       </span>
     </div>

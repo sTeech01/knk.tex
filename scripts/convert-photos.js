@@ -2,25 +2,43 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-const SRC = 'public/images/Фото товара';
+// Актуальная съёмка заказчика. Папка не попадает в репозиторий
+// (см. .gitignore) - в проект уезжают только сжатые WebP.
+const SRC = 'public/images/ткань';
 const OUT = 'public/images/fabrics';
 
 // Сопоставление подтверждено точным совпадением количества фото
 // с colorsCount в src/data/fabrics.ts.
 const MAP = {
-  'Канвас Camilla':   'kanvas',
+  'Канвас camilla':   'kanvas',
   'Канвас Rosabella': 'kanvas-ali',
   'Сатин Camilla':    'satin',
   'Сатин Rosabella':  'satin-ali',
+  'Бархат Glamour':   'barhat-glamour',
+  'Double blackout':  'dvuhstoronniy-blekaut',
 };
 
 // Презентационное фото -> обложка ткани и слайд на главной.
 const HERO = [
-  ['Презентационные/Канвас camilla/114.JPG',    'kanvas'],
-  ['Презентационные/канвас Rosabella/44.JPG',   'kanvas-ali'],
-  ['Презентационные/Сатин Camilla/389.JPG',     'satin'],
-  ['Презентационные/Сатин  Rosabella_/119.JPG', 'satin-ali'],
+  ['Презентационные/Канвас camilla/6489680577.jpg', 'kanvas'],
+  ['Презентационные/канвас rosabella/160.JPG',      'kanvas-ali'],
+  ['Презентационные/Сатин Camilla/DSC02073.JPG',    'satin'],
+  ['Презентационные/Сатин rosabella/144.JPG',       'satin-ali'],
+  ['Презентационные/бархат Glamour/23.JPG',         'barhat-glamour'],
+  ['Презентационные/Double blackout/IMG_4841.JPG',  'dvuhstoronniy-blekaut'],
 ];
+
+/**
+ * Имя файла = артикул оттенка у поставщика. У части съёмки имена
+ * пришли с камеры (DSC02079, IMG_4888, Snapseed) - по таким номер
+ * оттенка не определить, и в палитру они не идут: весь заказ у
+ * заказчика строится на номерах.
+ */
+const isShadeCode = (code) => /^\d+$/.test(code) || code === 'без номера';
+
+// ONLY=slug1,slug2 - пересобрать только часть тканей, не трогая остальные.
+const ONLY = process.env.ONLY ? process.env.ONLY.split(',') : null;
+const wanted = (slug) => !ONLY || ONLY.includes(slug);
 
 const safe = (code) =>
   code === 'без номера' ? 'bez-nomera'
@@ -32,10 +50,14 @@ const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SA
   const manifest = {};
 
   for (const [folder, slug] of Object.entries(MAP)) {
+    if (!wanted(slug)) continue;
     const dir = path.join(SRC, folder);
-    const files = fs.readdirSync(dir)
-      .filter(f => /\.(jpe?g|png)$/i.test(f))
+    const all = fs.readdirSync(dir).filter(f => /\.(jpe?g|png)$/i.test(f));
+    const files = all
+      .filter(f => isShadeCode(path.basename(f, path.extname(f))))
       .sort((a, b) => num(a) - num(b) || a.localeCompare(b, 'ru'));
+    const skipped = all.length - files.length;
+    if (skipped) console.log(slug, '- без номера в имени файла, пропущено:', skipped);
 
     fs.mkdirSync(path.join(OUT, slug, 'thumb'), { recursive: true });
     manifest[slug] = [];
@@ -65,6 +87,7 @@ const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SA
   fs.mkdirSync('public/images/hero', { recursive: true });
   const heroes = [];
   for (const [rel, slug] of HERO) {
+    if (!wanted(slug)) continue;
     const src = path.join(SRC, rel);
     if (!fs.existsSync(src)) { console.log('НЕТ ФАЙЛА:', rel); continue; }
     await sharp(src).rotate().resize({ width: 1600, withoutEnlargement: true })
@@ -76,7 +99,13 @@ const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SA
   }
   console.log('обложки и слайды:', heroes.join(', '));
 
-  fs.writeFileSync(path.join(__dirname, 'photo-manifest.json'),
-    JSON.stringify(manifest, null, 2), 'utf8');
+  // При частичной пересборке (ONLY=...) дописываем результат в манифест,
+  // а не перезаписываем его: иначе палитры остальных тканей пропали бы.
+  const manifestPath = path.join(__dirname, 'photo-manifest.json');
+  const previous = fs.existsSync(manifestPath)
+    ? JSON.parse(fs.readFileSync(manifestPath, 'utf8'))
+    : {};
+  fs.writeFileSync(manifestPath,
+    JSON.stringify({ ...previous, ...manifest }, null, 2), 'utf8');
   console.log('ГОТОВО');
 })();

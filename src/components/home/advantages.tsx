@@ -1,4 +1,4 @@
-import { Hash, Layers, Maximize2, Package, Palette, Truck } from "lucide-react";
+import { Factory, Layers, Package, Palette, Truck } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { homeCopy } from "@/data/copy";
@@ -9,7 +9,6 @@ import { formatRub } from "@/lib/format";
 import { plural } from "@/lib/plural";
 
 const maxShadesInFabric = Math.max(...fabrics.map((fabric) => fabric.colorsCount));
-const maxWidthCm = Math.max(...fabrics.map((fabric) => fabric.widthCm));
 
 /**
  * Преимущества собраны только из проверяемых фактов: все числа берутся из
@@ -23,9 +22,9 @@ const advantages = [
     text: `${totalShades} ${plural(totalShades, ["оттенок", "оттенка", "оттенков"])} в каталоге и до ${maxShadesInFabric} в одной ткани — цвет подбирается под проект, а не проект под цвет.`,
   },
   {
-    icon: Hash,
-    title: "Оттенок по номеру",
-    text: "Каждый цвет снят отдельно и подписан номером поставщика. Называете номер менеджеру — и речь точно об одном и том же оттенке.",
+    icon: Factory,
+    title: "Стабильность",
+    text: "Обеспечим ваше производство бесперебойной поставкой тканей: работаем напрямую с фабриками-производителями.",
   },
   {
     icon: Layers,
@@ -36,11 +35,6 @@ const advantages = [
     icon: Package,
     title: "От одного рулона",
     text: "Не нужно брать большую партию, чтобы запустить новую ткань в работу: минимальный заказ — один рулон.",
-  },
-  {
-    icon: Maximize2,
-    title: "Широкое полотно",
-    text: `Ширина до ${maxWidthCm} см: высокие портьеры шьются цельным полотнищем, без горизонтального шва.`,
   },
   {
     icon: Truck,

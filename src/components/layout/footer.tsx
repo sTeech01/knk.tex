@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Mail, MessageCircle, Phone, Send } from "lucide-react";
 import { navLinks } from "@/lib/nav";
 import { company } from "@/data/company";
-import { cityPages } from "@/data/cities";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -41,21 +40,6 @@ export function Footer() {
                 className="text-sm text-mist/80 transition-colors hover:text-gold"
               >
                 {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          <h3 className="mt-7 text-xs font-semibold uppercase tracking-wider text-mist/50">
-            Поставки
-          </h3>
-          <nav className="mt-4 flex flex-col gap-2.5">
-            {cityPages.map((city) => (
-              <Link
-                key={city.slug}
-                href={`/portyernye-tkani-optom/${city.slug}`}
-                className="text-sm text-mist/80 transition-colors hover:text-gold"
-              >
-                {city.name}
               </Link>
             ))}
           </nav>

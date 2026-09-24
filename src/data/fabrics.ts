@@ -205,6 +205,9 @@ const coverCodes: Record<string, string> = {
   "kanvas-ali": "44",
   satin: "389",
   "satin-ali": "119",
+  "barhat-glamour": "23",
+  // У двухстороннего блэкаута презентационный кадр пришёл с именем
+  // с камеры, номер оттенка неизвестен - бейдж на фото не показываем.
 };
 
 export const fabrics: Fabric[] = baseFabrics.map((fabric) => {

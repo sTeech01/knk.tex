@@ -44,4 +44,5 @@ next-env.d.ts
 # В репозиторий и в деплой попадают только сжатые WebP из public/images/fabrics.
 /assets_src/Фото товара/
 /public/images/Фото товара/
+/public/images/ткань/
 
