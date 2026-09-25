@@ -1,6 +1,29 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
+
+/*
+ * Отпечатки обложек - те же, что подставляются в адрес картинки
+ * параметром ?v= (см. src/data/cover-versions.ts). Оптимизатор картинок
+ * по умолчанию не пропускает локальные адреса с query, и разрешить их
+ * нужно поимённо: если просто опустить search, оптимизировать можно будет
+ * любой адрес с любым параметром.
+ *
+ * Список читается из того же файла, что и данные сайта, поэтому
+ * разойтись они не могут.
+ */
+const coverVersions: Record<string, string> = JSON.parse(
+  readFileSync(
+    path.join(process.cwd(), "scripts", "cover-versions.json"),
+    "utf8"
+  )
+);
+
+const coverSearchPatterns = [...new Set(Object.values(coverVersions))].map(
+  (version) => ({ pathname: "/images/**", search: `?v=${version}` })
+);
 
 /*
  * Политика безопасности контента. Задана прямо в конфиге, а не через
@@ -87,6 +110,13 @@ const nextConfig: NextConfig = {
      * включённом AVIF, и явная строчка не даёт включить его случайно.
      */
     formats: ["image/webp"],
+    /*
+     * Оптимизировать можно только картинки из public/images: и без query
+     * (логотип, заглушка, палитры оттенков), и с отпечатком обложки.
+     * Всё остальное оптимизатор отдаст как 400 - это ограничивает то,
+     * что через него можно прогнать.
+     */
+    localPatterns: [{ pathname: "/images/**", search: "" }, ...coverSearchPatterns],
   },
   experimental: {
     /*

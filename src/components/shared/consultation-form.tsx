@@ -11,19 +11,6 @@ import { company } from "@/data/company";
 
 type Status = "idle" | "submitting" | "success" | "error" | "rate-limited";
 
-/** Текст заявки для мессенджера — менеджер видит всё без переспрашивания. */
-function whatsappLink(name: string, phone: string, comment: string): string {
-  const text = [
-    "Здравствуйте! Заявка с сайта KNK TEX.",
-    `Имя: ${name}`,
-    `Телефон: ${phone}`,
-    comment,
-  ]
-    .filter(Boolean)
-    .join("\n");
-  return `${company.whatsapp}?text=${encodeURIComponent(text)}`;
-}
-
 export function ConsultationForm({
   subject,
   className,
@@ -32,7 +19,6 @@ export function ConsultationForm({
   className?: string;
 }) {
   const [status, setStatus] = useState<Status>("idle");
-  const [sent, setSent] = useState({ name: "", phone: "", comment: "" });
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -57,7 +43,6 @@ export function ConsultationForm({
       }
       if (!response.ok) throw new Error("request_failed");
 
-      setSent({ name, phone, comment });
       setStatus("success");
       form.reset();
     } catch {
@@ -72,18 +57,23 @@ export function ConsultationForm({
         <p className="font-heading text-lg">Заявка отправлена</p>
         <p className="max-w-xs text-sm text-muted-foreground">
           Менеджер свяжется с вами в рабочее время. Удобнее в мессенджере —
-          продублируйте заявку, ответим там.
+          напишите нам, ответим там.
         </p>
         {/* Экран не закрывается сам: раньше окно пропадало через 1,8 с,
-            и кнопку мессенджера никто не успел бы увидеть. */}
+            и кнопку мессенджера никто не успел бы увидеть.
+
+            Текст заявки в ссылку больше не подставляется: у MAX нет
+            параметра вроде ?text= у WhatsApp, ссылка ведёт только на
+            профиль. Зато и имя с телефоном не приходится держать в
+            состоянии формы ради одной кнопки. */}
         <a
-          href={whatsappLink(sent.name, sent.phone, sent.comment)}
+          href={company.max}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-2 inline-flex h-11 items-center gap-2 rounded-lg border border-border px-5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
         >
           <MessageCircle className="size-4" />
-          Продублировать в WhatsApp
+          Написать в MAX
         </a>
       </div>
     );

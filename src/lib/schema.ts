@@ -15,7 +15,7 @@ export function organizationJsonLd() {
     telephone: company.phone,
     email: company.email,
     areaServed: "RU",
-    sameAs: [company.telegram, company.whatsapp],
+    sameAs: [company.telegram, company.max],
   };
 }
 

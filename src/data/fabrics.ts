@@ -1,5 +1,6 @@
 import type { Fabric } from "@/lib/types";
 import { fabricColors } from "@/data/fabric-colors";
+import { coverVersions } from "@/data/cover-versions";
 
 /**
  * Источник структуры: TOVARNAYA MATRICA SAIT.xlsx.
@@ -201,8 +202,14 @@ const baseFabrics: Fabric[] = [
  * (scripts/convert-photos.js, раздел HERO).
  */
 const coverCodes: Record<string, string> = {
-  // У канваса Camilla и сатина Camilla презентационные кадры пришли
-  // с именами с камеры — номер оттенка неизвестен, бейдж не показываем.
+  // У канваса Camilla презентационный кадр пришёл с именем с камеры —
+  // номер оттенка неизвестен, бейдж не показываем.
+  //
+  // У сатина Camilla бейджа тоже нет, хотя новый кадр называется «119»:
+  // палитра Camilla — это оттенки 350-429, номера 119 в ней не существует
+  // (119 есть у сатина Rosabella). Пока заказчик не подтвердит номер,
+  // показывать его нельзя: бейдж отправил бы закупщика искать оттенок,
+  // которого у этой ткани нет.
   "kanvas-ali": "160",
   "satin-ali": "144",
   "barhat-glamour": "23",
@@ -223,7 +230,13 @@ export const fabrics: Fabric[] = baseFabrics
   .filter((fabric) => (fabricColors[fabric.slug]?.length ?? 0) > 0)
   .map((fabric) => ({
     ...fabric,
-    image: `/images/fabrics/${fabric.slug}/cover.webp`,
+    // ?v= - отпечаток содержимого обложки. Имя файла при замене кадра
+    // не меняется, а оптимизатор картинок Next кеширует результат по
+    // адресу и инвалидировать его нечем: документация советует менять src.
+    // Без отпечатка новая обложка несколько часов показывалась бы старой.
+    image: `/images/fabrics/${fabric.slug}/cover.webp${
+      coverVersions[fabric.slug] ? `?v=${coverVersions[fabric.slug]}` : ""
+    }`,
     colors: fabricColors[fabric.slug],
     coverCode: coverCodes[fabric.slug],
   }));

@@ -19,9 +19,9 @@ export function ContactChannels({ className }: { className?: string }) {
     },
     {
       icon: MessageCircle,
-      label: "WhatsApp",
-      value: "Написать в WhatsApp",
-      href: company.whatsapp,
+      label: "MAX",
+      value: "Написать в MAX",
+      href: company.max,
       external: true,
     },
     {

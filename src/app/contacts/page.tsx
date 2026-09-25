@@ -9,7 +9,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "Контакты",
   description:
-    "Контакты KNK TEX: телефон, Telegram, WhatsApp, email и режим работы. Оставьте заявку — менеджер свяжется с вами по вопросам оптовых поставок портьерных тканей.",
+    "Контакты KNK TEX: телефон, Telegram, MAX, email и режим работы. Оставьте заявку — менеджер свяжется с вами по вопросам оптовых поставок портьерных тканей.",
   alternates: { canonical: "/contacts" },
 };
 

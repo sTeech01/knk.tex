@@ -1,10 +1,14 @@
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
-// Актуальная съёмка заказчика. Папка не попадает в репозиторий
+// Актуальная съёмка заказчика. Папки не попадают в репозиторий
 // (см. .gitignore) - в проект уезжают только сжатые WebP.
 const SRC = 'public/images/ткань';
+// Презентационные кадры заказчик присылает отдельной папкой и кладёт
+// рядом со съёмкой оттенков, а не внутрь неё.
+const PRES = 'public/images/Презентационные';
 const OUT = 'public/images/fabrics';
 
 // Сопоставление подтверждено точным совпадением количества фото
@@ -19,13 +23,16 @@ const MAP = {
 };
 
 // Презентационное фото -> обложка ткани и слайд на главной.
+// Пути относительно PRES. Имя файла здесь же задаёт номер оттенка на
+// бейдже - он берётся из coverCodes в src/data/fabrics.ts, и при замене
+// кадра эти два места надо держать вместе.
 const HERO = [
-  ['Презентационные/Канвас camilla/6489680577.jpg', 'kanvas'],
-  ['Презентационные/канвас rosabella/160.JPG',      'kanvas-ali'],
-  ['Презентационные/Сатин Camilla/DSC02073.JPG',    'satin'],
-  ['Презентационные/Сатин rosabella/144.JPG',       'satin-ali'],
-  ['Презентационные/бархат Glamour/23.JPG',         'barhat-glamour'],
-  ['Презентационные/Double blackout/IMG_4841.JPG',  'dvuhstoronniy-blekaut'],
+  ['Канвас camilla/6489680577.jpg', 'kanvas'],
+  ['канвас rosabella/160.JPG',      'kanvas-ali'],
+  ['Сатин Camilla/119.JPG',         'satin'],
+  ['Сатин rosabella/144 (1).JPG',   'satin-ali'],
+  ['бархат Glamour/23.JPG',         'barhat-glamour'],
+  ['Double blackout/IMG_4841.JPG',  'dvuhstoronniy-blekaut'],
 ];
 
 /**
@@ -40,6 +47,11 @@ const isShadeCode = (code) => /^\d+$/.test(code) || code === 'без номер�
 const ONLY = process.env.ONLY ? process.env.ONLY.split(',') : null;
 const wanted = (slug) => !ONLY || ONLY.includes(slug);
 
+// HERO_ONLY=1 - пересобрать только обложки и слайды, не трогая палитры.
+// Заказчик меняет презентационный кадр чаще, чем саму съёмку оттенков,
+// и гонять из-за одной обложки полсотни фотографий незачем.
+const HERO_ONLY = process.env.HERO_ONLY === '1';
+
 const safe = (code) =>
   code === 'без номера' ? 'bez-nomera'
   : code.replace(/[^A-Za-z0-9._-]/g, '-');
@@ -50,7 +62,7 @@ const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SA
   const manifest = {};
 
   for (const [folder, slug] of Object.entries(MAP)) {
-    if (!wanted(slug)) continue;
+    if (HERO_ONLY || !wanted(slug)) continue;
     const dir = path.join(SRC, folder);
     const all = fs.readdirSync(dir).filter(f => /\.(jpe?g|png)$/i.test(f));
     const files = all
@@ -86,18 +98,54 @@ const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SA
   // Презентационные: обложка ткани + слайд героя (шире, для полноэкранного фона).
   fs.mkdirSync('public/images/hero', { recursive: true });
   const heroes = [];
+  const versions = {};
   for (const [rel, slug] of HERO) {
     if (!wanted(slug)) continue;
-    const src = path.join(SRC, rel);
+    const src = path.join(PRES, rel);
     if (!fs.existsSync(src)) { console.log('НЕТ ФАЙЛА:', rel); continue; }
+    const coverFile = path.join(OUT, slug, 'cover.webp');
     await sharp(src).rotate().resize({ width: 1600, withoutEnlargement: true })
-      .webp({ quality: 86, effort: 6 }).toFile(path.join(OUT, slug, 'cover.webp'));
+      .webp({ quality: 86, effort: 6 }).toFile(coverFile);
     // Слайд героя разворачивается на всю ширину экрана - нужен запас.
     await sharp(src).rotate().resize({ width: 2400, withoutEnlargement: true })
       .webp({ quality: 84, effort: 6 }).toFile(path.join('public/images/hero', slug + '.webp'));
+    /*
+     * Отпечаток содержимого обложки. Имя файла при замене кадра не меняется,
+     * а оптимизатор картинок Next кеширует результат по адресу и по своим
+     * же правилам инвалидации не имеет: документация прямо советует менять
+     * src. Отпечаток уезжает в адрес параметром ?v=, поэтому новый кадр
+     * виден сразу, а не через несколько часов.
+     */
+    versions[slug] = crypto.createHash('md5')
+      .update(fs.readFileSync(coverFile)).digest('hex').slice(0, 8);
     heroes.push(slug);
   }
   console.log('обложки и слайды:', heroes.join(', '));
+
+  // Отпечатки, как и манифест, дописываются: при частичной пересборке
+  // версии остальных обложек должны остаться на месте.
+  const versionsPath = path.join(__dirname, 'cover-versions.json');
+  const allVersions = {
+    ...(fs.existsSync(versionsPath)
+      ? JSON.parse(fs.readFileSync(versionsPath, 'utf8'))
+      : {}),
+    ...versions,
+  };
+  fs.writeFileSync(versionsPath, JSON.stringify(allVersions, null, 2), 'utf8');
+  fs.writeFileSync('src/data/cover-versions.ts',
+    `/**
+ * Отпечатки презентационных обложек. Файл сгенерирован
+ * scripts/convert-photos.js - руками его править не нужно.
+ *
+ * Отпечаток подставляется в адрес картинки параметром ?v=. Без него
+ * заменённая обложка ещё несколько часов показывалась бы старой:
+ * оптимизатор картинок Next кеширует результат по адресу, а адрес при
+ * замене кадра не меняется.
+ */
+export const coverVersions: Record<string, string> = ${
+      JSON.stringify(allVersions, null, 2)
+    };
+`, 'utf8');
 
   // При частичной пересборке (ONLY=...) дописываем результат в манифест,
   // а не перезаписываем его: иначе палитры остальных тканей пропали бы.

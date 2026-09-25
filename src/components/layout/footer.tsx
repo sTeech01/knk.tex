@@ -74,13 +74,13 @@ export function Footer() {
               Telegram
             </a>
             <a
-              href={company.whatsapp}
+              href={company.max}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 transition-colors hover:text-gold"
             >
               <MessageCircle className="size-4 text-gold" />
-              WhatsApp
+              MAX
             </a>
           </div>
         </div>

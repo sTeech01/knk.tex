@@ -1,3 +1,20 @@
+import { coverVersions } from "@/data/cover-versions";
+
+/**
+ * Адрес слайда с отпечатком содержимого. Слайды пересобираются из тех же
+ * презентационных кадров, что и обложки тканей, поэтому и отпечаток берётся
+ * оттуда же. Без него заменённый кадр ещё несколько часов показывался бы
+ * старым: оптимизатор картинок Next кеширует результат по адресу, а имя
+ * файла при замене не меняется.
+ *
+ * Для слайдов не из этого пайплайна (готовая штора) отпечатка нет - адрес
+ * остаётся обычным.
+ */
+function slide(file: string): string {
+  const version = coverVersions[file.replace(/\.webp$/, "")];
+  return `/images/hero/${file}${version ? `?v=${version}` : ""}`;
+}
+
 /**
  * Презентационные фотографии для первого экрана главной страницы.
  * Меняются по очереди. Чтобы добавить слайд, достаточно положить WebP
@@ -5,33 +22,33 @@
  */
 export const heroSlides = [
   {
-    image: "/images/hero/kanvas.webp",
+    image: slide("kanvas.webp"),
     alt: "Портьерный канвас Camilla — фактурное полотно для штор",
   },
   {
     // Единственный кадр, где ткань показана готовой шторой, а не образцом.
     // Стоит вторым: до шестого слайда при автолистании мало кто досидит.
-    image: "/images/hero/shtora-kanvas.webp",
+    image: slide("shtora-kanvas.webp"),
     alt: "Готовая штора из портьерного канваса на люверсах",
   },
   {
-    image: "/images/hero/kanvas-ali.webp",
+    image: slide("kanvas-ali.webp"),
     alt: "Портьерный канвас Rosabella — плотная ткань для штор",
   },
   {
-    image: "/images/hero/satin.webp",
+    image: slide("satin.webp"),
     alt: "Портьерный сатин Camilla — гладкое полотно с мягким блеском",
   },
   {
-    image: "/images/hero/satin-ali.webp",
+    image: slide("satin-ali.webp"),
     alt: "Портьерный сатин Rosabella — ткань для штор с мягкой драпировкой",
   },
   {
-    image: "/images/hero/barhat-glamour.webp",
+    image: slide("barhat-glamour.webp"),
     alt: "Портьерный бархат Glamour — плотный матовый ворс для тяжёлых штор",
   },
   {
-    image: "/images/hero/dvuhstoronniy-blekaut.webp",
+    image: slide("dvuhstoronniy-blekaut.webp"),
     alt: "Двухсторонний блэкаут — плотное полотно для полного затемнения",
   },
 ] as const;
