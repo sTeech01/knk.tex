@@ -24,7 +24,15 @@ export function MetersCalculator({
     [totalUsd, rateUsdToRub]
   );
 
-  const belowMinimum = meters > 0 && meters < company.metersPerRoll;
+  /*
+   * Ткань идёт рулонами от 30 погонных метров, отрезать меньше нельзя -
+   * считать 20 метров было не просто неточно, а невозможно к исполнению.
+   * Пока поле в фокусе, значение не трогаем: иначе набранная первой цифра
+   * «3» мгновенно превращалась бы в 30 и дописать её не выходило.
+   */
+  function clampToMinimum() {
+    setMeters((current) => Math.max(current, company.metersPerRoll));
+  }
 
   return (
     <div>
@@ -39,9 +47,10 @@ export function MetersCalculator({
           <Input
             id="meters"
             type="number"
-            min={1}
+            min={company.metersPerRoll}
             value={meters}
             onChange={(event) => setMeters(Math.max(0, Number(event.target.value)))}
+            onBlur={clampToMinimum}
             className="h-11 max-w-40"
           />
         </div>
@@ -54,13 +63,14 @@ export function MetersCalculator({
         </div>
       </div>
 
-      {belowMinimum && (
-        <p className="mt-4 text-xs text-muted-foreground">
-          Минимальный заказ — {company.minOrderLabel} (в рулоне от{" "}
-          {company.metersPerRoll} погонных метров). Итоговая стоимость уточняется у
-          менеджера.
-        </p>
-      )}
+      {/* Подсказка постоянная, а не всплывает при вводе меньшего числа:
+          она объясняет границу заранее, до того как поле поправит значение
+          само. Про «от 1 рулона» здесь намеренно не пишем - эта формула
+          живёт отдельно и без метража. */}
+      <p className="mt-4 text-xs text-muted-foreground">
+        Ткань отгружается рулонами, поэтому расчёт начинается от{" "}
+        {company.metersPerRoll} погонных метров.
+      </p>
       <p className="mt-2 text-xs text-muted-foreground">
         Расчёт ориентировочный и не является публичной офертой.
       </p>

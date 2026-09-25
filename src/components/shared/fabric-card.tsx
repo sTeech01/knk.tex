@@ -14,8 +14,16 @@ export function FabricCard({
   priority?: boolean;
 }) {
   return (
-    <Link href={`/catalog/${fabric.slug}`} className="group flex flex-col">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted">
+    // z-10 при наведении: увеличенное окно перекрывает соседние карточки,
+    // а не подлезает под них.
+    <Link
+      href={`/catalog/${fabric.slug}`}
+      className="group relative z-0 flex flex-col hover:z-10"
+    >
+      {/* Растёт само окно, а фотография внутри остаётся в тех же границах:
+          раньше увеличивался снимок при неподвижной рамке, и края ткани
+          уезжали в обрез. Закупщику нужен весь кадр целиком, крупнее. */}
+      <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted transition-transform duration-500 ease-out group-hover:scale-[1.04]">
         <Image
           src={fabric.image}
           alt={`${fabric.name} — портьерная ткань, ${fabric.category.toLowerCase()}`}
@@ -24,7 +32,7 @@ export function FabricCard({
           fetchPriority={priority ? "high" : undefined}
           quality={88}
           sizes="(min-width: 1280px) 22vw, (min-width: 768px) 30vw, 90vw"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+          className="object-cover"
         />
         {/* Число оттенков — главное отличие одной ткани от другой для
             закупщика, поэтому оно на фото, а не в мелкой строке внизу. */}
