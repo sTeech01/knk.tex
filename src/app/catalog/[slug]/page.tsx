@@ -11,7 +11,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { fabrics, getFabricBySlug } from "@/data/fabrics";
-import { getUsdToRubRate } from "@/lib/currency";
+import { getUsdRateInfo } from "@/lib/currency";
+import { PriceNote } from "@/components/shared/price-note";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/json-ld";
 import { FabricGallery } from "@/components/fabric/fabric-gallery";
@@ -66,7 +67,8 @@ export default async function FabricPage({
   const fabric = getFabricBySlug(slug);
   if (!fabric) notFound();
 
-  const rateUsdToRub = await getUsdToRubRate();
+  const rateInfo = await getUsdRateInfo();
+  const rateUsdToRub = rateInfo.rate;
   // Единственная ткань в своей категории с тем же названием — показывать
   // категорию отдельно незачем, получается повтор одного и того же.
   const sameAsCategory = fabric.name === fabric.category;
@@ -154,6 +156,10 @@ export default async function FabricPage({
                 priceUsd={fabric.priceUsd}
                 rateUsdToRub={rateUsdToRub}
                 size="lg"
+              />
+              <PriceNote
+                rate={rateInfo}
+                className="mt-2 text-xs text-muted-foreground"
               />
               <div className="mt-4">
                 <FabricOrderButton

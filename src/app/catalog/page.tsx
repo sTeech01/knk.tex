@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { company } from "@/data/company";
 import { fabrics } from "@/data/fabrics";
 import { filterFabrics, type CatalogFilters, type CatalogSort } from "@/lib/catalog-filters";
-import { getUsdToRubRate } from "@/lib/currency";
+import { getUsdRateInfo } from "@/lib/currency";
+import { PriceNote } from "@/components/shared/price-note";
 import { SearchBar } from "@/components/catalog/search-bar";
 import { SortSelect } from "@/components/catalog/sort-select";
 import { FiltersPanel } from "@/components/catalog/filters-panel";
@@ -44,7 +45,8 @@ export default async function CatalogPage({
     sort: (getParam("sort") as CatalogSort) ?? "default",
   };
 
-  const rateUsdToRub = await getUsdToRubRate();
+  const rateInfo = await getUsdRateInfo();
+  const rateUsdToRub = rateInfo.rate;
   const filteredFabrics = filterFabrics(fabrics, filters, rateUsdToRub);
 
   const jsonLd = breadcrumbJsonLd([
@@ -65,6 +67,9 @@ export default async function CatalogPage({
           {fabrics.length} видов портьерных тканей. Минимальный заказ —{" "}
           {company.minOrderLabel} по каждой позиции.
         </p>
+        {/* Цены на карточках рублёвые, но считаются из долларов - подпись
+            объясняет, почему завтра число может быть другим. */}
+        <PriceNote rate={rateInfo} className="mt-2 text-xs text-muted-foreground" />
       </div>
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
