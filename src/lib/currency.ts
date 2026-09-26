@@ -1,7 +1,23 @@
 const CBR_DAILY_URL = "https://www.cbr.ru/scripts/XML_daily.asp";
 
-// Используется только если ЦБ РФ недоступен (сеть, таймаут и т.п.).
-const FALLBACK_USD_RUB_RATE = 80;
+/*
+ * Последний известный курс ЦБ на случай, когда сайт не смог получить
+ * свежий и в кеше ещё ничего нет (первый запрос после деплоя, а ЦБ в этот
+ * момент недоступен).
+ *
+ * Значение не берётся с потолка: это реальный курс ЦБ на 26.09.2026.
+ * Раньше здесь стояло круглое 80, и при недоступности ЦБ цены на сайте
+ * разом уезжали процентов на пять - для оптовой партии это заметные
+ * деньги. Значение стоит обновлять, когда курс уходит далеко.
+ */
+const LAST_KNOWN_USD_RUB_RATE = 84.34;
+
+/*
+ * Последний курс, реально полученный от ЦБ в этом процессе. Живёт, пока
+ * жив сервер, и закрывает короткие перебои: цена останется вчерашней
+ * от ЦБ, а не подменится константой.
+ */
+let lastFetchedRate: number | null = null;
 
 function parseUsdRateFromCbrXml(xml: string): number | null {
   const valuteMatch = xml.match(
@@ -49,26 +65,57 @@ export type UsdRateInfo = {
  * Next.js кэширует результат и обновляет раз в час (revalidate); при
  * недоступности ЦБ используется резервный курс.
  */
-export async function getUsdRateInfo(): Promise<UsdRateInfo> {
+/** Один поход к ЦБ. null - не получилось, причина неважна. */
+async function fetchCbrRate(
+  init: RequestInit & { next?: { revalidate: number } }
+): Promise<{ rate: number; date: string | null } | null> {
   try {
-    const response = await fetch(CBR_DAILY_URL, {
-      next: { revalidate: 3600 },
-    });
-    if (!response.ok) {
-      return { rate: FALLBACK_USD_RUB_RATE, date: null, fromCbr: false };
-    }
+    const response = await fetch(CBR_DAILY_URL, init);
+    if (!response.ok) return null;
 
     const buffer = await response.arrayBuffer();
     const xml = new TextDecoder("windows-1251").decode(buffer);
     const rate = parseUsdRateFromCbrXml(xml);
-    if (rate === null) {
-      return { rate: FALLBACK_USD_RUB_RATE, date: null, fromCbr: false };
-    }
+    if (rate === null) return null;
 
-    return { rate, date: parseRateDateFromCbrXml(xml), fromCbr: true };
+    return { rate, date: parseRateDateFromCbrXml(xml) };
   } catch {
-    return { rate: FALLBACK_USD_RUB_RATE, date: null, fromCbr: false };
+    return null;
   }
+}
+
+/**
+ * Курс USD/RUB по данным ЦБ РФ вместе с датой, на которую он установлен.
+ *
+ * Цена на сайте привязана к курсу ЦБ, поэтому подменять его произвольным
+ * числом можно только в самом крайнем случае. Порядок такой:
+ *
+ * 1. свежий курс от ЦБ (обновляется раз в час);
+ * 2. если ЦБ не ответил - последний успешный ответ из кеша запросов: это
+ *    по-прежнему курс ЦБ, просто вчерашний;
+ * 3. если и кеша нет - последний курс, полученный этим процессом;
+ * 4. и только если ничего нет - записанное в коде значение. Тогда подпись
+ *    «по курсу ЦБ» с цены исчезает: ссылаться на ЦБ было бы неправдой.
+ */
+export async function getUsdRateInfo(): Promise<UsdRateInfo> {
+  const fresh = await fetchCbrRate({ next: { revalidate: 3600 } });
+  if (fresh) {
+    lastFetchedRate = fresh.rate;
+    return { rate: fresh.rate, date: fresh.date, fromCbr: true };
+  }
+
+  // Принудительно из кеша: если ЦБ отвечал хотя бы раз, значение там есть.
+  const cached = await fetchCbrRate({ cache: "force-cache" });
+  if (cached) {
+    lastFetchedRate = cached.rate;
+    return { rate: cached.rate, date: cached.date, fromCbr: true };
+  }
+
+  if (lastFetchedRate !== null) {
+    return { rate: lastFetchedRate, date: null, fromCbr: true };
+  }
+
+  return { rate: LAST_KNOWN_USD_RUB_RATE, date: null, fromCbr: false };
 }
 
 /** Только курс — для мест, где подпись о его источнике не показывается. */

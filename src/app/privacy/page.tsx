@@ -62,13 +62,14 @@ export default function PrivacyPage() {
           Оператором персональных данных выступает {company.name} — оптовый
           поставщик портьерных тканей. Связаться с оператором по любому вопросу
           об обработке данных можно по телефону {company.phone} или по адресу{" "}
-          {company.email}.
+          {company.legalEntity?.privacyEmail ?? company.email}.
         </p>
         {company.legalEntity ? (
           <p>
-            Полное наименование: {company.legalEntity.fullName}. ИНН{" "}
-            {company.legalEntity.inn}, ОГРН {company.legalEntity.ogrn}. Адрес:{" "}
-            {company.legalEntity.address}.
+            Оператор: {company.legalEntity.fullName}. ИНН{" "}
+            {company.legalEntity.inn}, ОГРНИП {company.legalEntity.ogrn}. Адрес:{" "}
+            {company.legalEntity.address}. Обращения об обработке персональных
+            данных принимаются по адресу {company.legalEntity.privacyEmail}.
           </p>
         ) : null}
       </Section>
@@ -156,7 +157,8 @@ export default function PrivacyPage() {
           </li>
         </ul>
         <p>
-          Для этого достаточно написать на {company.email} или позвонить по
+          Для этого достаточно написать на{" "}
+          {company.legalEntity?.privacyEmail ?? company.email} или позвонить по
           телефону {company.phone}. Оператор отвечает на обращение в срок,
           установленный законом, — не позднее тридцати дней.
         </p>
