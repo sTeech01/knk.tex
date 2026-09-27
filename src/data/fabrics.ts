@@ -210,6 +210,7 @@ const coverCodes: Record<string, string> = {
   // поэтому оттенок с бейджа в сетке ниже не ищется.
   "kanvas-ali": "160",
   satin: "119",
+  "podkladochnaya-tkan": "3",
   "satin-ali": "144",
   "barhat-glamour": "23",
   // У двухстороннего блэкаута презентационный кадр пришёл с именем

@@ -243,4 +243,11 @@ export const fabricColors: Record<string, FabricColor[]> = {
     { code: "18", image: "/images/fabrics/dvuhstoronniy-blekaut/18.webp", thumb: "/images/fabrics/dvuhstoronniy-blekaut/thumb/18.webp" },
     { code: "19", image: "/images/fabrics/dvuhstoronniy-blekaut/19.webp", thumb: "/images/fabrics/dvuhstoronniy-blekaut/thumb/19.webp" },
   ],
+  "podkladochnaya-tkan": [
+    { code: "1", image: "/images/fabrics/podkladochnaya-tkan/1.webp", thumb: "/images/fabrics/podkladochnaya-tkan/thumb/1.webp" },
+    { code: "3", image: "/images/fabrics/podkladochnaya-tkan/3.webp", thumb: "/images/fabrics/podkladochnaya-tkan/thumb/3.webp" },
+    { code: "4", image: "/images/fabrics/podkladochnaya-tkan/4.webp", thumb: "/images/fabrics/podkladochnaya-tkan/thumb/4.webp" },
+    { code: "10", image: "/images/fabrics/podkladochnaya-tkan/10.webp", thumb: "/images/fabrics/podkladochnaya-tkan/thumb/10.webp" },
+    { code: "11", image: "/images/fabrics/podkladochnaya-tkan/11.webp", thumb: "/images/fabrics/podkladochnaya-tkan/thumb/11.webp" },
+  ],
 };

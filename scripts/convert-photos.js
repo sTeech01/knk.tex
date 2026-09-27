@@ -14,12 +14,13 @@ const OUT = 'public/images/fabrics';
 // Сопоставление подтверждено точным совпадением количества фото
 // с colorsCount в src/data/fabrics.ts.
 const MAP = {
-  'Канвас camilla':   'kanvas',
-  'Канвас Rosabella': 'kanvas-ali',
-  'Сатин Camilla':    'satin',
-  'Сатин Rosabella':  'satin-ali',
-  'Бархат Glamour':   'barhat-glamour',
-  'Double blackout':  'dvuhstoronniy-blekaut',
+  'Канвас camilla':     'kanvas',
+  'Канвас Rosabella':   'kanvas-ali',
+  'Сатин Camilla':      'satin',
+  'Сатин Rosabella':    'satin-ali',
+  'Бархат Glamour':     'barhat-glamour',
+  'Double blackout':    'dvuhstoronniy-blekaut',
+  'Подкладочная ткань': 'podkladochnaya-tkan',
 };
 
 // Презентационное фото -> обложка ткани и слайд на главной.
@@ -33,7 +34,20 @@ const HERO = [
   ['Сатин rosabella/144 (1).JPG',   'satin-ali'],
   ['бархат Glamour/23.JPG',         'barhat-glamour'],
   ['Double blackout/IMG_4841.JPG',  'dvuhstoronniy-blekaut'],
+  ['подкладочная ткань/3.JPG',      'podkladochnaya-tkan'],
 ];
+
+/*
+ * Презентационные заказчик кладёт то рядом со съёмкой оттенков, то внутрь
+ * неё. Ищем в обоих местах, чтобы кадр не потерялся из-за папки.
+ */
+function findPresentation(rel) {
+  for (const base of [PRES, path.join(SRC, 'Презентационные')]) {
+    const full = path.join(base, rel);
+    if (fs.existsSync(full)) return full;
+  }
+  return null;
+}
 
 /**
  * Имя файла = артикул оттенка у поставщика. У части съёмки имена
@@ -101,8 +115,8 @@ const num = (s) => { const m = s.match(/^\d+/); return m ? +m[0] : Number.MAX_SA
   const versions = {};
   for (const [rel, slug] of HERO) {
     if (!wanted(slug)) continue;
-    const src = path.join(PRES, rel);
-    if (!fs.existsSync(src)) { console.log('НЕТ ФАЙЛА:', rel); continue; }
+    const src = findPresentation(rel);
+    if (!src) { console.log('НЕТ ФАЙЛА:', rel); continue; }
     const coverFile = path.join(OUT, slug, 'cover.webp');
     await sharp(src).rotate().resize({ width: 1600, withoutEnlargement: true })
       .webp({ quality: 86, effort: 6 }).toFile(coverFile);
