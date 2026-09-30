@@ -14,5 +14,6 @@ export const coverVersions: Record<string, string> = {
   "satin-ali": "06c8b778",
   "barhat-glamour": "9130a522",
   "dvuhstoronniy-blekaut": "182bd2ed",
-  "podkladochnaya-tkan": "40f0752f"
+  "podkladochnaya-tkan": "40f0752f",
+  "blekaut-midnight": "c6a97909"
 };

@@ -21,7 +21,15 @@ const MAP = {
   'Бархат Glamour':     'barhat-glamour',
   'Double blackout':    'dvuhstoronniy-blekaut',
   'Подкладочная ткань': 'podkladochnaya-tkan',
+  'Midnight':           'blekaut-midnight',
 };
+
+/*
+ * Заказчик прислал те же съёмки ещё раз, в папках с артикулами
+ * поставщика: 901, Petek kadife, ZUMRUT, SAB-0692, Glamour, VIP liner.
+ * Файлы совпадают с уже обработанными байт в байт, поэтому папки здесь
+ * не перечислены - иначе одна и та же ткань собиралась бы дважды.
+ */
 
 // Презентационное фото -> обложка ткани и слайд на главной.
 // Пути относительно PRES. Имя файла здесь же задаёт номер оттенка на
@@ -35,6 +43,10 @@ const HERO = [
   ['бархат Glamour/23.JPG',         'barhat-glamour'],
   ['Double blackout/IMG_4841.JPG',  'dvuhstoronniy-blekaut'],
   ['подкладочная ткань/3.JPG',      'podkladochnaya-tkan'],
+  // У Midnight отдельного постановочного кадра пока нет, поэтому обложкой
+  // служит оттенок из палитры - глубокий графит с читаемой фактурой.
+  // Когда заказчик пришлёт презентационную съёмку, строка меняется на неё.
+  ['Midnight/24.JPG',               'blekaut-midnight'],
 ];
 
 /*
@@ -42,7 +54,9 @@ const HERO = [
  * неё. Ищем в обоих местах, чтобы кадр не потерялся из-за папки.
  */
 function findPresentation(rel) {
-  for (const base of [PRES, path.join(SRC, 'Презентационные')]) {
+  // Третий вариант - сама съёмка оттенков: пока постановочного кадра нет,
+  // обложкой служит один из оттенков.
+  for (const base of [PRES, path.join(SRC, 'Презентационные'), SRC]) {
     const full = path.join(base, rel);
     if (fs.existsSync(full)) return full;
   }
