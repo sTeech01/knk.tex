@@ -4,13 +4,16 @@ import { ConsultationButton } from "@/components/shared/consultation-button";
 import { homeCopy } from "@/data/copy";
 import { company } from "@/data/company";
 import { formatRub } from "@/lib/format";
+import { convertUsdToRub } from "@/lib/currency";
 
 /**
  * Сайт не магазин: корзины и оформления нет, заказ подтверждает менеджер.
  * Оптовику, привыкшему к интернет-магазинам, это неочевидно — без явных
  * шагов непонятно, что делать после выбора ткани. Блок снимает этот вопрос.
  */
-const steps = [
+// Шаги строятся функцией, а не константой: цена раскладки считается по
+// курсу ЦБ, который известен только на запрос.
+const buildSteps = (rateUsdToRub: number) => [
   {
     title: "Выберите ткань и оттенок",
     text: "В каталоге у каждого цвета свой номер — запишите номера, которые подходят.",
@@ -21,7 +24,7 @@ const steps = [
     // Заголовок короткий не случайно: длинный вариант переносился на две
     // строки, и текст второго шага уезжал вниз относительно соседних плиток.
     title: "Можно посмотреть вживую",
-    text: `Раскладка с образцами всей палитры стоит ${formatRub(company.swatchBookPriceRub)}, её стоимость вычитается из следующего заказа. Можно обойтись без неё и выбрать по фото в каталоге.`,
+    text: `Раскладка с образцами всей палитры стоит ${formatRub(convertUsdToRub(company.swatchBookPriceUsd, rateUsdToRub))}, её стоимость вычитается из следующего заказа. Можно обойтись без неё и выбрать по фото в каталоге.`,
   },
   {
     title: "Оставьте заявку",
@@ -33,7 +36,9 @@ const steps = [
   },
 ];
 
-export function HowToOrder() {
+export function HowToOrder({ rateUsdToRub }: { rateUsdToRub: number }) {
+  const steps = buildSteps(rateUsdToRub);
+
   return (
     <section className="bg-mist py-28">
       <div className="mx-auto max-w-7xl px-6">

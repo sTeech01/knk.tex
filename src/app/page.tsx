@@ -28,8 +28,8 @@ export default async function HomePage() {
       <Hero />
       <CategoryGrid />
       <FeaturedFabrics rateUsdToRub={rateUsdToRub} />
-      <Advantages />
-      <HowToOrder />
+      <Advantages rateUsdToRub={rateUsdToRub} />
+      <HowToOrder rateUsdToRub={rateUsdToRub} />
       <DeliveryStrip />
       <ContactSection />
     </>
