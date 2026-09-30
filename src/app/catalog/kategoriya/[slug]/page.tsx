@@ -119,7 +119,8 @@ export default async function CategoryPage({
           <h2 className="font-heading text-xl">Нужен подбор под проект?</h2>
           <p className="mt-1 max-w-xl text-sm text-muted-foreground">
             Менеджер подберёт оттенок по номеру и рассчитает поставку.
-            Минимальный заказ — {company.minOrderLabel}. {company.freeDeliveryNote}.
+            Минимальный заказ — {company.minOrderLabel}.{" "}
+            {company.freeDeliveryNote}, {company.deliveryRussiaNote.toLowerCase()}.
           </p>
         </div>
         <ConsultationButton

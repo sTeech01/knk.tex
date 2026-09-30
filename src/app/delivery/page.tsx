@@ -55,6 +55,7 @@ export default function DeliveryPage() {
           <p className="font-heading text-lg">Доставка по Москве — бесплатно</p>
           <p className="text-sm text-muted-foreground">
             По России — отгрузка любой транспортной компанией из списка ниже.
+            Доставку оплачивает покупатель напрямую перевозчику, по его тарифу.
           </p>
         </div>
       </div>

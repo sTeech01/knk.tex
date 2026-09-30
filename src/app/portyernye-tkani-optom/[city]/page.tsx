@@ -110,14 +110,19 @@ export default async function CityPage({
         <p className="mt-4 text-muted-foreground">{page.intro}</p>
       </div>
 
-      {page.freeDelivery && (
-        <div className="mt-8 flex items-center gap-4 rounded-lg border border-gold/30 bg-gold-soft/40 px-5 py-4">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gold text-gold-foreground">
-            <BadgeCheck className="size-5" />
-          </span>
-          <p className="font-heading text-lg">{company.freeDeliveryNote}</p>
-        </div>
-      )}
+      {/* Бесплатная доставка только по Москве. В остальных городах на её
+          месте условие для регионов — иначе страница молчала о том, кто
+          платит перевозчику. */}
+      <div className="mt-8 flex items-center gap-4 rounded-lg border border-gold/30 bg-gold-soft/40 px-5 py-4">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gold text-gold-foreground">
+          <BadgeCheck className="size-5" />
+        </span>
+        <p className="font-heading text-lg">
+          {page.freeDelivery
+            ? company.freeDeliveryNote
+            : company.deliveryRussiaNote}
+        </p>
+      </div>
 
       <section className="mt-12">
         <h2 className="font-heading text-2xl">{page.focus.heading}</h2>
