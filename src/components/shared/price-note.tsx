@@ -1,4 +1,5 @@
 import type { UsdRateInfo } from "@/lib/currency";
+import { company } from "@/data/company";
 
 /**
  * Подпись под ценой: на какой день она посчитана.
@@ -19,10 +20,14 @@ export function PriceNote({
   rate: Pick<UsdRateInfo, "fromCbr">;
   className?: string;
 }) {
+  // Условие оплаты не зависит от курса, поэтому показывается всегда -
+  // и когда курс от ЦБ получен, и когда нет.
+  const payment = `Цена за расчёт наличными, безналичный — плюс ${company.cashlessSurchargePercent} %.`;
+
   if (!rate.fromCbr) {
     return (
       <p className={className}>
-        Окончательную стоимость подтверждает менеджер.
+        {payment} Окончательную стоимость подтверждает менеджер.
       </p>
     );
   }
@@ -36,7 +41,8 @@ export function PriceNote({
    */
   return (
     <p className={className}>
-      По курсу ЦБ РФ на сегодня. Пересчёт — ежедневно.
+      Цена актуальна на день просмотра: она пересчитывается каждый день по
+      курсу ЦБ РФ к доллару. {payment}
     </p>
   );
 }
