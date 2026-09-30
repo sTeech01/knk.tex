@@ -43,10 +43,7 @@ const HERO = [
   ['бархат Glamour/23.JPG',         'barhat-glamour'],
   ['Double blackout/IMG_4841.JPG',  'dvuhstoronniy-blekaut'],
   ['подкладочная ткань/3.JPG',      'podkladochnaya-tkan'],
-  // У Midnight отдельного постановочного кадра пока нет, поэтому обложкой
-  // служит оттенок из палитры - глубокий графит с читаемой фактурой.
-  // Когда заказчик пришлёт презентационную съёмку, строка меняется на неё.
-  ['Midnight/24.JPG',               'blekaut-midnight'],
+  ['Midnight/Midnight.JPG',         'blekaut-midnight'],
 ];
 
 /*

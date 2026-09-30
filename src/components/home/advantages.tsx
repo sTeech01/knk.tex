@@ -6,7 +6,6 @@ import { company } from "@/data/company";
 import { fabrics, totalShades } from "@/data/fabrics";
 import { carriersCount } from "@/data/delivery-schedule";
 import { formatRub } from "@/lib/format";
-import { convertUsdToRub } from "@/lib/currency";
 import { plural } from "@/lib/plural";
 
 const maxShadesInFabric = Math.max(...fabrics.map((fabric) => fabric.colorsCount));
@@ -16,9 +15,7 @@ const maxShadesInFabric = Math.max(...fabrics.map((fabric) => fabric.colorsCount
  * данных каталога и расписания, а не пишутся вручную. Никаких «лет на
  * рынке» и «тысяч клиентов» — их нечем подтвердить.
  */
-// Список строится функцией, а не константой: цена раскладки зависит от
-// курса ЦБ, а он известен только на запрос.
-const buildAdvantages = (rateUsdToRub: number) => [
+const advantages = [
   {
     icon: Palette,
     title: "Широкая палитра",
@@ -32,7 +29,7 @@ const buildAdvantages = (rateUsdToRub: number) => [
   {
     icon: Layers,
     title: "Раскладка вживую",
-    text: `Все цвета ткани можно заказать раскладкой за ${formatRub(convertUsdToRub(company.swatchBookPriceUsd, rateUsdToRub))} и выбрать не по экрану. Её стоимость вычитается из следующего заказа.`,
+    text: `Все цвета ткани можно заказать раскладкой за ${formatRub(company.swatchBookPriceRub)} и выбрать не по экрану. Её стоимость вычитается из следующего заказа.`,
   },
   {
     icon: Package,
@@ -46,9 +43,7 @@ const buildAdvantages = (rateUsdToRub: number) => [
   },
 ];
 
-export function Advantages({ rateUsdToRub }: { rateUsdToRub: number }) {
-  const advantages = buildAdvantages(rateUsdToRub);
-
+export function Advantages() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-28">
       <Reveal>

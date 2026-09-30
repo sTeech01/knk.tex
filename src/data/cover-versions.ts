@@ -15,5 +15,5 @@ export const coverVersions: Record<string, string> = {
   "barhat-glamour": "9130a522",
   "dvuhstoronniy-blekaut": "182bd2ed",
   "podkladochnaya-tkan": "40f0752f",
-  "blekaut-midnight": "c6a97909"
+  "blekaut-midnight": "64bc2b9d"
 };

@@ -175,7 +175,6 @@ export default async function FabricPage({
             <SwatchBookOffer
               fabricName={fabric.name}
               colorsCount={fabric.colorsCount}
-              rateUsdToRub={rateUsdToRub}
             />
 
             <div className="rounded-lg border border-border p-6">

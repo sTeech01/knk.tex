@@ -1,6 +1,5 @@
 import { Layers } from "lucide-react";
 import { formatRub } from "@/lib/format";
-import { convertUsdToRub } from "@/lib/currency";
 import { company } from "@/data/company";
 import { ConsultationButton } from "@/components/shared/consultation-button";
 
@@ -9,17 +8,15 @@ import { ConsultationButton } from "@/components/shared/consultation-button";
  * чтобы выбрать цвет вживую, а не по экрану; при следующем заказе
  * стоимость раскладки вычитается из суммы. Механика заказчика.
  *
- * Цена считается по курсу ЦБ, как и цены на ткани: прайс у заказчика
- * долларовый, и раскладка не исключение.
+ * Цена фиксированная в рублях и от курса не зависит — в отличие от цен
+ * на сами ткани. Это подтверждённое решение заказчика.
  */
 export function SwatchBookOffer({
   fabricName,
   colorsCount,
-  rateUsdToRub,
 }: {
   fabricName: string;
   colorsCount: number;
-  rateUsdToRub: number;
 }) {
   return (
     <div className="rounded-lg border border-border p-5">
@@ -36,7 +33,7 @@ export function SwatchBookOffer({
           </div>
         </div>
         <p className="shrink-0 font-heading text-xl font-medium">
-          {formatRub(convertUsdToRub(company.swatchBookPriceUsd, rateUsdToRub))}
+          {formatRub(company.swatchBookPriceRub)}
           <span className="text-accent">*</span>
         </p>
       </div>
